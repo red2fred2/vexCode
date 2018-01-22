@@ -2,37 +2,55 @@
 #pragma competitionControl(Competition)
 #include "Vex_Competition_Includes.c"
 
-//constants
-  //drivetrain
+/****************************************************************
+////////////////////////// Constants ////////////////////////////
+****************************************************************/
+
+//drivetrain
 const int leftDriveDeadzone = 10;
 const double leftDriveMult = 1.0;
 const int rightDriveDeadzone = 10;
 const double rightDriveMult = 1.0;
-  //lift
+
+////////////////////////////////////////////////////////////////
+//lift
 const int leftLiftDeadzone = 10;
 const double leftLiftMult = 1.0;
 const int rightLiftDeadzone = 10;
 const double rightLiftMult = 1.0;
-  //arm
+
+/////////////////////////////////////////////////////////////////
+
+//arm
 const int armDeadzone = 10;
 const double armMult = 1.0;
-  //baseLift
+
+/////////////////////////////////////////////////////////////////
+
+//baseLift
 const int leftBaseLiftDeadzone = 10;
 const double leftBaseLiftMult = 1.0;
 const int rightBaseLiftDeadzone = 10;
 const double rightBaseLiftMult = 1.0;
 
 
-//utility functions
+/****************************************************************
+/////////////////////// Utility Functions ///////////////////////
+****************************************************************/
+
 int deadzone(int value, int deadzone) {
     if(value > deadzone) return value;
     else return 0;
 }
 
+/////////////////////////////////////////////////////////////////
+
 int applyMult(int value, double multiplier) {
   int val = (double) value;
   return (int)(val * multiplier);
 }
+
+/////////////////////////////////////////////////////////////////
 
 void drive(int left, int right) {
   int deadLeft = deadzone(left, leftDriveDeadzone);
@@ -44,6 +62,8 @@ void drive(int left, int right) {
   motor[rightDrive] = multRight;
 }
 
+/////////////////////////////////////////////////////////////////
+
 void lift(int left, int right) {
   int deadleft = deadzone(left, leftLiftDeadzone);
   int multLeft = applyMult(deadLeft, leftLiftMult);
@@ -54,11 +74,15 @@ void lift(int left, int right) {
   motor[rightLift] = multRight;
 }
 
+/////////////////////////////////////////////////////////////////
+
 void arm(int power) {
   int deadPower = deadzone(power, armDeadzone);
   int multPower = applyMult(deadPower, armMult);
   motor[armSlide] = multPower;
 }
+
+/////////////////////////////////////////////////////////////////
 
 void baseLift(int left, int right) {
   int deadleft = deadzone(left, leftBaseLiftDeadzone);
@@ -70,31 +94,38 @@ void baseLift(int left, int right) {
   motor[baseLiftRight] = multRight;
 }
 
+/////////////////////////////////////////////////////////////////
+
 int leftDriveEncoderNullifier = 0;
 int getLeftDriveEncoder() {
   return encoderValue - leftDriveEncoderNullifier;
 }
-
 void nullifyLeftDriveEncoder() {
   leftDriveEncoderNullifier = getLeftDriveEncoder();
 }
+
+/////////////////////////////////////////////////////////////////
 
 int rightDriveEncoderNullifier = 0;
 int getRightDriveEncoder() {
   return encoderValue - rightDriveEncoderNullifier;
 }
-
 void nullifyRightDriveEncoder() {
   rightDriveEncoderNullifier = getRightDriveEncoder();
 }
 
 
-//teleop functions
+/****************************************************************
+/////////////////////// Teleop Functions ////////////////////////
+****************************************************************/
+
 void tankDrive() {
   int left = VexRT(Ch3);
   int right = VexRT(Ch2);
   drive(left, right);
 }
+
+/////////////////////////////////////////////////////////////////
 
 void joystickDrive() {
   int up = vexRT(Ch3);
@@ -102,15 +133,21 @@ void joystickDrive() {
   drive(up + right, up - right);
 }
 
+/////////////////////////////////////////////////////////////////
+
 void liftControl() {
   int left = vexRT(Ch3Xmtr2);
   int right = vexRT(Ch2Xmtr2);
   lift(left, right);
 }
 
+/////////////////////////////////////////////////////////////////
+
 void armControl() {
   int forward = vexRT(Ch4Xmtr2);
 }
+
+/////////////////////////////////////////////////////////////////
 
 void baseLiftControl() {
   int power = VexRT(Ch1Xmtr2);
@@ -118,15 +155,21 @@ void baseLiftControl() {
 }
 
 
-//auto functions
+/****************************************************************
+//////////////////////// Auto Functions /////////////////////////
+****************************************************************/
 
 
-////////////////
+/****************************************************************
+///////////////////////////// Main //////////////////////////////
+****************************************************************/
 void pre_auton() {
   //setup
   nullifyLeftDriveEncoder();
   nullifyRightDriveEncoder();
 }
+
+/////////////////////////////////////////////////////////////////
 
 task autonomous() {
   //routine
@@ -136,6 +179,8 @@ task autonomous() {
   nullifyLeftDriveEncoder();
   nullifyRightDriveEncoder();
 }
+
+/////////////////////////////////////////////////////////////////
 
 task usercontrol() {
   while(true) {
