@@ -19,6 +19,17 @@ void drive(int left, int right) {
 	motor[rightDrive] = deadzone(right);
 }
 
+void lift(int left, int right) {
+	motor[leftLift] = deadzone(left);
+	motor[rightLift] = deadzone(right);
+}
+
+void liftControl() {
+	int left = vexRT(Ch3Xmtr2);
+	int right = vexRT(Ch2Xmtr2);
+	lift(left, right);
+}
+
 void pre_auton() {
 
 }
@@ -29,6 +40,7 @@ task autonomous() {
 
 task usercontrol() {
 	while(true) {
-
+    joystickDrive();
+    liftControl();
   }
 }
