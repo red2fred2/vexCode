@@ -38,6 +38,16 @@ void armControl() {
 	int forward = vexRT(Ch4Xmtr2);
 }
 
+void baseLift(int left, int right) {
+	motor[baseLiftLeft] = deadzone(left);
+	motor[baseLiftRight] = deadzone(right);
+}
+
+void baseLiftControl() {
+	int power = VexRT(Ch1Xmtr2);
+	baseLift(power);
+}
+
 void pre_auton() {
 
 }
