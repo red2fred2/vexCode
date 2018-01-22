@@ -30,6 +30,14 @@ void liftControl() {
 	lift(left, right);
 }
 
+void arm(int forward) {
+	motor[armSlide] = deadzone(forward);
+}
+
+void armControl() {
+	int forward = vexRT(Ch4Xmtr2);
+}
+
 void pre_auton() {
 
 }
@@ -40,7 +48,10 @@ task autonomous() {
 
 task usercontrol() {
 	while(true) {
-    joystickDrive();
+    //driver
+	  joystickDrive();
+    //copilot
     liftControl();
+    armControl();
   }
 }
