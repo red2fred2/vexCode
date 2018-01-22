@@ -63,5 +63,6 @@ task usercontrol() {
     //copilot
     liftControl();
     armControl();
+    baseLiftControl();
   }
 }
