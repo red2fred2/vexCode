@@ -2,30 +2,72 @@
 #pragma competitionControl(Competition)
 #include "Vex_Competition_Includes.c"
 
+//constants
+  //drivetrain
+const int leftDriveDeadzone = 10;
+const double leftDriveMult = 1.0;
+const int rightDriveDeadzone = 10;
+const double rightDriveMult = 1.0;
+  //lift
+const int leftLiftDeadzone = 10;
+const double leftLiftMult = 1.0;
+const int rightLiftDeadzone = 10;
+const double rightLiftMult = 1.0;
+  //arm
+const int armDeadzone = 10;
+const double armMult = 1.0;
+  //baseLift
+const int leftBaseLiftDeadzone = 10;
+const double leftBaseLiftMult = 1.0;
+const int rightBaseLiftDeadzone = 10;
+const double rightBaseLiftMult = 1.0;
+
+
 //utility functions
-int deadzone(int value) {
-    const int deadzone = 10;
+int deadzone(int value, int deadzone) {
     if(value > deadzone) return value;
     else return 0;
 }
 
+int applyMult(int value, double multiplier) {
+  int val = (double) value;
+  return (int)(val * multiplier);
+}
+
 void drive(int left, int right) {
-  motor[leftDrive] = deadzone(left);
-  motor[rightDrive] = deadzone(right);
+  int deadLeft = deadzone(left, leftDriveDeadzone);
+  int multLeft = applyMult(deadLeft, leftDriveMult);
+  motor[leftDrive] = multLeft;
+
+  int deadRight = deadzone(right);
+  int multRight = applyMult(deadRight, rightDriveMult);
+  motor[rightDrive] = multRight;
 }
 
 void lift(int left, int right) {
-  motor[leftLift] = deadzone(left);
-  motor[rightLift] = deadzone(right);
+  int deadleft = deadzone(left, leftLiftDeadzone);
+  int multLeft = applyMult(deadLeft, leftLiftMult);
+  motor[leftLift] = leftMult;
+
+  int deadRight = deadzone(right, rightLiftDeadzone);
+  int multRight = applyMult(deadRight, rightLiftMult);
+  motor[rightLift] = multRight;
 }
 
-void arm(int forward) {
-  motor[armSlide] = deadzone(forward);
+void arm(int power) {
+  int deadPower = deadzone(power, armDeadzone);
+  int multPower = applyMult(deadPower, armMult);
+  motor[armSlide] = multPower;
 }
 
 void baseLift(int left, int right) {
-  motor[baseLiftLeft] = deadzone(left);
-  motor[baseLiftRight] = deadzone(right);
+  int deadleft = deadzone(left, leftBaseLiftDeadzone);
+  int multLeft = applyMult(deadleft, leftBaseLiftMult);
+  motor[baseLiftLeft] = multLeft;
+  
+  int deadRight = deadzone(right, rightBaseLiftDeadzone);
+  int multRight = applyMult(deadRight, rightBaseLiftMult);
+  motor[baseLiftRight] = multRight;
 }
 
 int leftDriveEncoderNullifier = 0;
@@ -45,6 +87,7 @@ int getRightDriveEncoder() {
 void nullifyRightDriveEncoder() {
   rightDriveEncoderNullifier = getRightDriveEncoder();
 }
+
 
 //teleop functions
 void joystickDrive() {
@@ -74,11 +117,18 @@ void baseLiftControl() {
 
 ////////////////
 void pre_auton() {
-
+  //setup
+  nullifyLeftDriveEncoder();
+  nullifyRightDriveEncoder();
 }
 
 task autonomous() {
+  //routine
 
+
+  //cleanup
+  nullifyLeftDriveEncoder();
+  nullifyRightDriveEncoder();
 }
 
 task usercontrol() {
