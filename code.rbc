@@ -90,6 +90,12 @@ void nullifyRightDriveEncoder() {
 
 
 //teleop functions
+void tankDrive() {
+  int left = VexRT(Ch3);
+  int right = VexRT(Ch2);
+  drive(left, right);
+}
+
 void joystickDrive() {
   int up = vexRT(Ch3);
   int right = vexRT(Ch4);
@@ -136,6 +142,7 @@ task usercontrol() {
     //automatic
 
     //driver
+    //tankDrive();
     joystickDrive();
 
     //copilot
