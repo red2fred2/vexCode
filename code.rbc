@@ -28,11 +28,28 @@ void baseLift(int left, int right) {
   motor[baseLiftRight] = deadzone(right);
 }
 
+int leftDriveEncoderNullifier = 0;
+int getLeftDriveEncoder() {
+  return encoderValue - leftDriveEncoderNullifier;
+}
+
+void nullifyLeftDriveEncoder() {
+  leftDriveEncoderNullifier = getLeftDriveEncoder();
+}
+
+int rightDriveEncoderNullifier = 0;
+int getRightDriveEncoder() {
+  return encoderValue - rightDriveEncoderNullifier;
+}
+
+void nullifyRightDriveEncoder() {
+  rightDriveEncoderNullifier = getRightDriveEncoder();
+}
 
 //teleop functions
 void joystickDrive() {
-  int up = vexRT(Ch3)
-  int right = vexRT(Ch4)
+  int up = vexRT(Ch3);
+  int right = vexRT(Ch4);
   drive(up + right, up - right);
 }
 
