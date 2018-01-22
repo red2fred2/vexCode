@@ -2,6 +2,23 @@
 #pragma competitionControl(Competition)
 #include "Vex_Competition_Includes.c"
 
+int deadzone(int value) {
+		int deadzone = 10;
+		if(value > deadzone) return value;
+		else return 0;
+}
+
+void joystickDrive() {
+	int up = vexRT(Ch3)
+  int right = vexRT(Ch4)
+  drive(up + right, up - right);
+}
+
+void drive(int left, int right) {
+	motor[leftDrive] = deadzone(left);
+	motor[rightDrive] = deadzone(right);
+}
+
 void pre_auton() {
 
 }
