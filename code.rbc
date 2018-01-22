@@ -3,7 +3,7 @@
 #include "Vex_Competition_Includes.c"
 
 int deadzone(int value) {
-		int deadzone = 10;
+		const int deadzone = 10;
 		if(value > deadzone) return value;
 		else return 0;
 }
