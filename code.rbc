@@ -12,6 +12,10 @@ const double leftDriveMult = 1.0;
 const int rightDriveDeadzone = 10;
 const double rightDriveMult = 1.0;
 
+const double drivePMult = 1.0;
+const double driveIMult = 1.0;
+const double driveDMult = 1.0;
+
 ////////////////////////////////////////////////////////////////
 //lift
 const int leftLiftDeadzone = 10;
@@ -32,6 +36,15 @@ const int leftBaseLiftDeadzone = 10;
 const double leftBaseLiftMult = 1.0;
 const int rightBaseLiftDeadzone = 10;
 const double rightBaseLiftMult = 1.0;
+
+
+/****************************************************************
+////////////////////////// Variables ////////////////////////////
+****************************************************************/
+
+double driveP = 0;
+double driveI = 0;
+double driveD = 0;
 
 
 /****************************************************************
@@ -112,6 +125,51 @@ int getRightDriveEncoder() {
 }
 void nullifyRightDriveEncoder() {
   rightDriveEncoderNullifier = getRightDriveEncoder();
+}
+
+
+/****************************************************************
+///////////////////////// PID Functions /////////////////////////
+****************************************************************/
+
+double p() {
+
+}
+
+/////////////////////////////////////////////////////////////////
+
+double i() {
+
+}
+
+/////////////////////////////////////////////////////////////////
+
+double d() {
+
+}
+
+/////////////////////////////////////////////////////////////////
+
+double pi() {
+  return p() + i();
+}
+
+/////////////////////////////////////////////////////////////////
+
+double pd() {
+  return p() + d();
+}
+
+/////////////////////////////////////////////////////////////////
+
+double id() {
+  return i() + d();
+}
+
+/////////////////////////////////////////////////////////////////
+
+double pid() {
+  return p() + i() + d();
 }
 
 
