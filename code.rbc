@@ -2,52 +2,60 @@
 #pragma competitionControl(Competition)
 #include "Vex_Competition_Includes.c"
 
+//utility functions
 int deadzone(int value) {
-		const int deadzone = 10;
-		if(value > deadzone) return value;
-		else return 0;
+    const int deadzone = 10;
+    if(value > deadzone) return value;
+    else return 0;
 }
 
+void drive(int left, int right) {
+  motor[leftDrive] = deadzone(left);
+  motor[rightDrive] = deadzone(right);
+}
+
+void lift(int left, int right) {
+  motor[leftLift] = deadzone(left);
+  motor[rightLift] = deadzone(right);
+}
+
+void arm(int forward) {
+  motor[armSlide] = deadzone(forward);
+}
+
+void baseLift(int left, int right) {
+  motor[baseLiftLeft] = deadzone(left);
+  motor[baseLiftRight] = deadzone(right);
+}
+
+
+//teleop functions
 void joystickDrive() {
-	int up = vexRT(Ch3)
+  int up = vexRT(Ch3)
   int right = vexRT(Ch4)
   drive(up + right, up - right);
 }
 
-void drive(int left, int right) {
-	motor[leftDrive] = deadzone(left);
-	motor[rightDrive] = deadzone(right);
-}
-
-void lift(int left, int right) {
-	motor[leftLift] = deadzone(left);
-	motor[rightLift] = deadzone(right);
-}
-
 void liftControl() {
-	int left = vexRT(Ch3Xmtr2);
-	int right = vexRT(Ch2Xmtr2);
-	lift(left, right);
-}
-
-void arm(int forward) {
-	motor[armSlide] = deadzone(forward);
+  int left = vexRT(Ch3Xmtr2);
+  int right = vexRT(Ch2Xmtr2);
+  lift(left, right);
 }
 
 void armControl() {
-	int forward = vexRT(Ch4Xmtr2);
-}
-
-void baseLift(int left, int right) {
-	motor[baseLiftLeft] = deadzone(left);
-	motor[baseLiftRight] = deadzone(right);
+  int forward = vexRT(Ch4Xmtr2);
 }
 
 void baseLiftControl() {
-	int power = VexRT(Ch1Xmtr2);
-	baseLift(power);
+  int power = VexRT(Ch1Xmtr2);
+  baseLift(power);
 }
 
+
+//auto functions
+
+
+////////////////
 void pre_auton() {
 
 }
@@ -57,9 +65,12 @@ task autonomous() {
 }
 
 task usercontrol() {
-	while(true) {
+  while(true) {
+    //automatic
+
     //driver
-	  joystickDrive();
+    joystickDrive();
+
     //copilot
     liftControl();
     armControl();
