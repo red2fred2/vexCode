@@ -153,26 +153,26 @@ double d(double target, double actual, double mult) {
 
 /////////////////////////////////////////////////////////////////
 
-double pi() {
-  return p() + i();
+double pi(double target, double actual, double Pmult, double Imult) {
+  return p(target, actual, Pmult) + i(target, actual, Imult);
 }
 
 /////////////////////////////////////////////////////////////////
 
-double pd() {
-  return p() + d();
+double pd(double target, double actual, double Pmult, double Dmult) {
+  return p(target, actual, Pmult) + d(target, actual, Dmult);
 }
 
 /////////////////////////////////////////////////////////////////
 
-double id() {
-  return i() + d();
+double id(double target, double actual, double Imult, double Dmult) {
+  return i(target, actual, Imult) + d(target, actual, Dmult);
 }
 
 /////////////////////////////////////////////////////////////////
 
-double pid() {
-  return p() + i() + d();
+double pid(double target, double actual, double Pmult, double Imult, double Dmult) {
+  return p(target, actual, Pmult) + i(target, actual, Imult) + d(target, actual, Dmult);
 }
 
 
