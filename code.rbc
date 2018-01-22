@@ -42,9 +42,8 @@ const double rightBaseLiftMult = 1.0;
 ////////////////////////// Variables ////////////////////////////
 ****************************************************************/
 
-double driveP = 0;
-double driveI = 0;
-double driveD = 0;
+double driveIntegral = 0;
+double driveError = 0;
 
 
 /****************************************************************
@@ -132,20 +131,24 @@ void nullifyRightDriveEncoder() {
 ///////////////////////// PID Functions /////////////////////////
 ****************************************************************/
 
-double p() {
-
+double p(double target, double actual, double mult) {
+  return mult * (target - actual);
 }
 
 /////////////////////////////////////////////////////////////////
 
-double i() {
-
+double i(double target, double actual, double mult) {
+  driveI += p(target, actual, mult);
+  return driveIntegral;
 }
 
 /////////////////////////////////////////////////////////////////
 
-double d() {
-
+double d(double target, double actual, double mult) {
+  double newError = p(target, actual, mult);
+  double diff = newError - driveError;
+  driveError = newError;
+  return mult * (newError);
 }
 
 /////////////////////////////////////////////////////////////////
