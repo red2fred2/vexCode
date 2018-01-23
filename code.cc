@@ -295,9 +295,9 @@ double leftI(double target, double actual) {
   leftIntegral += P(target, actual);
   return leftIMult * leftIntegral;
 }
-double rightI(double target, double actual, double Pmult, double Imult) {
-  rightIntegral += P(target, actual, Pmult);
-  return Imult * rightIntegral;
+double rightI(double target, double actual) {
+  rightIntegral += P(target, actual);
+  return leftIMult * rightIntegral;
 }
 
 /////////////////////////////////////////////////////////////////
