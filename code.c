@@ -290,27 +290,27 @@ double P(double target, double actual) {
 /////////////////////////////////////////////////////////////////
 
 double leftI(double target, double actual) {
-  leftIntegral += P(target, actual);
-  return leftIMult * leftIntegral;
+  leftIntegral += target - actual;
+  return Imult * leftIntegral;
 }
 double rightI(double target, double actual) {
-  rightIntegral += P(target, actual);
-  return rightIMult * rightIntegral;
+  rightIntegral += target - actual;
+  return Imult * rightIntegral;
 }
 
 /////////////////////////////////////////////////////////////////
 
 double leftD(double target, double actual) {
-  double newError = P(target, actual);
+  double newError = target - actual;
   double diff = newError - leftError;
   leftError = newError;
-  return leftDMult * newError;
+  return Dmult * newError;
 }
 double rightD(double target, double actual) {
-  double newError = P(target, actual);
+  double newError = target - actual;
   double diff = newError - rightError;
   rightError = newError;
-  return rightDMult * newError;
+  return Dmult * newError;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -324,29 +324,29 @@ int rightPI(double target, double actual) {
 
 /////////////////////////////////////////////////////////////////
 
-int PD(double target, double actual) {
+int rightPD(double target, double actual) {
   return (int)(P(target, actual) + leftD(target, actual));
 }
-int rightPD(double target, double actual, double Pmult, double Dmult) {
-  return (int)(P(target, actual, Pmult) + leftD(target, actual, Dmult));
+int rightPD(double target, double actual) {
+  return (int)(P(target, actual) + leftD(target, actual));
 }
 
 /////////////////////////////////////////////////////////////////
 
-int leftID(double target, double actual, double Imult, double Dmult) {
-  return (int)(leftI(target, actual, Imult) + leftD(target, actual, Dmult));
+int leftID(double target, double actual) {
+  return (int)(leftI(target, actual) + leftD(target, actual));
 }
-int rightID(double target, double actual, double Imult, double Dmult) {
-  return (int)(rightI(target, actual, Imult) + rightD(target, actual, Dmult));
+int rightID(double target, double actual) {
+  return (int)(rightI(target, actual) + rightD(target, actual));
 }
 
 /////////////////////////////////////////////////////////////////
 
-int leftPID(double target, double actual, double Pmult, double Imult, double Dmult) {
-  return (int)(P(target, actual, Pmult) + leftI(target, actual, Imult) + leftD(target, actual, Dmult));
+int leftPID(double target, double actual) {
+  return (int)(P(target, actual) + leftI(target, actual) + leftD(target, actual));
 }
-int rightPID(double target, double actual, double Pmult, double Imult, double Dmult) {
-  return (int)(P(target, actual, Pmult) + rightI(target, actual, Imult) + rightD(target, actual, Dmult));
+int rightPID(double target, double actual) {
+  return (int)(P(target, actual) + rightI(target, actual) + rightD(target, actual));
 }
 
 /////////////////////////////////////////////////////////////////
