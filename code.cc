@@ -317,11 +317,11 @@ double rightD(double target, double actual) {
 
 /////////////////////////////////////////////////////////////////
 
-int leftPI(double target, double actual, double Pmult, double Imult) {
-  return (int)(P(target, actual, Pmult) + leftI(target, actual, Imult));
+int leftPI(double target, double actual) {
+  return (int)(P(target, actual) + leftI(target, actual));
 }
-int rightPI(double target, double actual, double Pmult, double Imult) {
-  return (int)(P(target, actual, Pmult) + rightI(target, actual, Imult));
+int rightPI(double target, double actual) {
+  return (int)(P(target, actual) + rightI(target, actual));
 }
 
 /////////////////////////////////////////////////////////////////
