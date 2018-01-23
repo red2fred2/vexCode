@@ -31,6 +31,7 @@ const int rightTicksPerInch = (int)(rightEncoderTicksPerRotation / inchesPerWhee
 
 
 ////////////////////////////////////////////////////////////////
+
 //lift
 const int leftLiftDeadzone  = 10;
 const double leftLiftMult   = 1.0;
@@ -50,6 +51,12 @@ const int leftBaseLiftDeadzone  = 10;
 const double leftBaseLiftMult   = 1.0;
 const int rightBaseLiftDeadzone = 10;
 const double rightBaseLiftMult  = 1.0;
+
+/////////////////////////////////////////////////////////////////
+
+//claw
+const int clawDeadzone = 10;
+const double clawMult  = 1.0;
 
 
 /****************************************************************
@@ -123,6 +130,14 @@ void baseLift(int left, int right) {
   int deadRight = deadzone(right, rightBaseLiftDeadzone);
   int multRight = applyMult(deadRight, rightBaseLiftMult);
   motor[baseLiftRight] = multRight;
+}
+
+/////////////////////////////////////////////////////////////////
+
+void claw(int power) {
+  int deadPower = deadzone(power, clawDeadzone);
+  int multPower = applyMult(deadPower, clawMult);
+  motor[claw] = multPower;
 }
 
 /////////////////////////////////////////////////////////////////
