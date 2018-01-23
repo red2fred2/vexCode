@@ -452,12 +452,12 @@ void autoDrive(double inches) {
   resetLeftPID();
   resetRightPID();
 
-  int leftTicks = leftTicksPerInch * inches + getLeftDriveEncoder;
-  int rightTicks = rightTicksPerInch * inches + getRightDriveEncoder;
+  int leftTicks = leftTicksPerInch * inches + getLeftDriveEncoder();
+  int rightTicks = rightTicksPerInch * inches + getRightDriveEncoder();
 
   drive(
-    leftPID(leftTicks, getLeftDriveEncoder, leftPMult, leftIMult, leftDMult),
-    rightPID(rightTicks, getRightDriveEncoder, rightPMult, rightIMult, rightDMult)
+    leftPID(leftTicks, getLeftDriveEncoder(), leftPMult, leftIMult, leftDMult),
+    rightPID(rightTicks, getRightDriveEncoder(), rightPMult, rightIMult, rightDMult)
   );
 }
 
@@ -467,12 +467,12 @@ void autoLeftSwingTurn(double degrees) {
   resetLeftPID();
   resetRightPID();
 
-  int leftTicks = inchesPerSwingTurnDegree * leftTicksPerInch * degrees + getLeftDriveEncoder;
+  int leftTicks = inchesPerSwingTurnDegree * leftTicksPerInch * degrees + getLeftDriveEncoder();
   int rightTicks = 0;
 
   drive(
-    leftPID(leftTicks, getLeftDriveEncoder, leftPMult, leftIMult, leftDMult),
-    rightPID(rightTicks, getRightDriveEncoder, rightPMult, rightIMult, rightDMult)
+    leftPID(leftTicks, getLeftDriveEncoder(), leftPMult, leftIMult, leftDMult),
+    rightPID(rightTicks, getRightDriveEncoder(), rightPMult, rightIMult, rightDMult)
   );
 }
 
@@ -481,7 +481,7 @@ void autoRightSwingTurn(double degrees) {
   resetRightPID();
 
   int leftTicks = 0;
-  int rightTicks = inchesPerSwingTurnDegree * leftTicksPerInch * degrees + getRightDriveEncoder;
+  int rightTicks = inchesPerSwingTurnDegree * leftTicksPerInch * degrees + getRightDriveEncoder();
 
   drive(
     leftPID(leftTicks, getLeftDriveEncoder, leftPMult, leftIMult, leftDMult),
@@ -495,12 +495,12 @@ void autoLeftPivotTurn(double degrees) {
   resetLeftPID();
   resetRightPID();
 
-  int leftTicks = -inchesPerPivotDegree * leftTicksPerInch * degrees + getLeftDriveEncoder;
-  int rightTicks = (inchesPerPivotDegree * rightTicksPerInch * degrees + getRightDriveEncoder);
+  int leftTicks = -(inchesPerPivotDegree * leftTicksPerInch * degrees + getLeftDriveEncoder());
+  int rightTicks = (inchesPerPivotDegree * rightTicksPerInch * degrees + getRightDriveEncoder());
 
   drive(
-    leftPID(leftTicks, getLeftDriveEncoder, leftPMult, leftIMult, leftDMult),
-    rightPID(rightTicks, getRightDriveEncoder, rightPMult, rightIMult, rightDMult)
+    leftPID(leftTicks, getLeftDriveEncoder(), leftPMult, leftIMult, leftDMult),
+    rightPID(rightTicks, getRightDriveEncoder(), rightPMult, rightIMult, rightDMult)
   );
 }
 
@@ -508,12 +508,12 @@ void autoRightPivotTurn(double degrees) {
   resetLeftPID();
   resetRightPID();
 
-  int leftTicks = (inchesPerPivotDegree * leftTicksPerInch * degrees + getLeftDriveEncoder);
-  int rightTicks = -inchesPerPivotDegree * rightTicksPerInch * degrees + getRightDriveEncoder;
+  int leftTicks = (inchesPerPivotDegree * leftTicksPerInch * degrees + getLeftDriveEncoder());
+  int rightTicks = -(inchesPerPivotDegree * rightTicksPerInch * degrees + getRightDriveEncoder());
 
   drive(
-    leftPID(leftTicks, getLeftDriveEncoder, leftPMult, leftIMult, leftDMult),
-    rightPID(rightTicks, getRightDriveEncoder, rightPMult, rightIMult, rightDMult)
+    leftPID(leftTicks, getLeftDriveEncoder(), leftPMult, leftIMult, leftDMult),
+    rightPID(rightTicks, getRightDriveEncoder(), rightPMult, rightIMult, rightDMult)
   );
 }
 
@@ -617,9 +617,6 @@ task asyncAutoClaw() {
 ****************************************************************/
 
 void leftAuto() {
-
-
-
   //drive off bar
   autoDrive(4);
   //turn to match tile
@@ -683,14 +680,14 @@ task usercontrol() {
   while(true) {
 
     //driver
-    StartTask(modeSwitch);
+    startTask(modeSwitch);
 
-    if(tankMode) StartTask(tankDrive);
-    else StartTask(joystickDrive);
+    if(tankMode) startTask(tankDrive);
+    else startTask(joystickDrive);
 
     //copilot
-    StartTask(liftControl);
-    StartTask(armControl);
-    StartTask(baseLiftControl);
+    startTask(liftControl);
+    startTask(armControl);
+    startTask(baseLiftControl);
   }
 }
