@@ -297,22 +297,22 @@ double leftI(double target, double actual) {
 }
 double rightI(double target, double actual) {
   rightIntegral += P(target, actual);
-  return leftIMult * rightIntegral;
+  return rightIMult * rightIntegral;
 }
 
 /////////////////////////////////////////////////////////////////
 
-double leftD(double target, double actual, double Pmult, double Dmult) {
-  double newError = P(target, actual, Pmult);
+double leftD(double target, double actual) {
+  double newError = P(target, actual);
   double diff = newError - leftError;
   leftError = newError;
-  return Dmult * newError;
+  return leftDMult * newError;
 }
-double rightD(double target, double actual, double Pmult, double Dmult) {
-  double newError = P(target, actual, Pmult);
+double rightD(double target, double actual) {
+  double newError = P(target, actual);
   double diff = newError - rightError;
   rightError = newError;
-  return Dmult * newError;
+  return rightDMult * newError;
 }
 
 /////////////////////////////////////////////////////////////////
