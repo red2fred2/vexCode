@@ -101,7 +101,7 @@ int deadzone(int value, int deadzone) {
 /////////////////////////////////////////////////////////////////
 
 int applyMult(int value, double multiplier) {
-  int val = (double)value;
+  double val = (double)value;
   return (int)(val * multiplier);
 }
 
