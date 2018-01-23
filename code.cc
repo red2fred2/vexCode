@@ -44,6 +44,8 @@ const double rightBaseLiftMult = 1.0;
 
 double driveIntegral = 0;
 double driveError = 0;
+bool tankMode = false;
+bool buttonLock = false;
 
 
 /****************************************************************
@@ -248,8 +250,20 @@ task usercontrol() {
     //automatic
 
     //driver
-    //tankDrive();
-    joystickDrive();
+    if(VexRT(Btn6U)) {
+      if(!buttonLock) {
+        tankMode = !tankMode;
+      }
+      buttonLock = true;
+    } else {
+      buttonLock = false;
+    }
+
+    if(tankMode) {
+      tankDrive();
+    } else {
+      joystickDrive();
+    }
 
     //copilot
     liftControl();
