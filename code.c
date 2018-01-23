@@ -1,8 +1,10 @@
 #pragma platform(VEX2)
 #pragma competitionControl(Competition)
+
 #pragma config(UART_Usage, UART2, uartVEXLCD, baudRate19200, IOPins, None, None)
 #pragma config(Sensor, dgtl1, leftDriveEncoder, sensorQuadEncoder)
 #pragma config(Sensor, dgtl3, rightDriveEncoder, sensorQuadEncoder)
+
 #pragma config(Motor, port1, leftDrive, tmotorNone, openLoop)
 #pragma config(Motor, port2, rightDrive, tmotorNone, openLoop)
 #pragma config(Motor, port3, leftLift, tmotorNone, openLoop)
@@ -11,6 +13,7 @@
 #pragma config(Motor, port6, baseLiftLeft, tmotorNone, openLoop)
 #pragma config(Motor, port7, baseLiftRight, tmotorNone, openLoop)
 #pragma config(Motor, port8, clawMotor, tmotorNone, openLoop)
+
 #include "Vex_Competition_Includes.c"
 
 
@@ -377,7 +380,7 @@ void resetRightPID() {
 /////////////////////// Teleop Functions ////////////////////////
 ****************************************************************/
 
-void tankDrive() {
+task tankDrive() {
   int left = VexRT(Ch3);
   int right = VexRT(Ch2);
   expoDrive(left, right);
@@ -385,7 +388,7 @@ void tankDrive() {
 
 /////////////////////////////////////////////////////////////////
 
-void joystickDrive() {
+task joystickDrive() {
   int up = vexRT(Ch3);
   int right = vexRT(Ch4);
   expoDrive(up + right, up - right);
@@ -393,7 +396,7 @@ void joystickDrive() {
 
 /////////////////////////////////////////////////////////////////
 
-void liftControl() {
+task liftControl() {
   int left = vexRT(Ch3Xmtr2);
   int right = vexRT(Ch2Xmtr2);
   lift(left, right);
@@ -401,15 +404,24 @@ void liftControl() {
 
 /////////////////////////////////////////////////////////////////
 
-void armControl() {
+task armControl() {
   int forward = vexRT(Ch4Xmtr2);
 }
 
 /////////////////////////////////////////////////////////////////
 
-void baseLiftControl() {
+task baseLiftControl() {
   int power = VexRT(Ch1Xmtr2);
   baseLift(power);
+}
+
+/////////////////////////////////////////////////////////////////
+
+task modeSwitch() {
+  if(VexRT(Btn6U)) {
+      waitUntilFalse(VexRT(Btn6U));
+      tankMode = !tankMode;
+    }
 }
 
 
@@ -576,20 +588,14 @@ task usercontrol() {
   while(true) {
 
     //driver
-    if(VexRT(Btn6U)) {
-      waitUntilFalse(VexRT(Btn6U));
-      tankMode = !tankMode;
-    }
+    StartTask(modeSwitch);
 
-    if(tankMode) {
-      tankDrive();
-    } else {
-      joystickDrive();
-    }
+    if(tankMode) StartTask(tankDrive);
+    else StartTask(joystickDrive);
 
     //copilot
-    liftControl();
-    armControl();
-    baseLiftControl();
+    StartTask(liftControl);
+    StartTask(armControl);
+    StartTask(baseLiftControl);
   }
 }
