@@ -545,7 +545,7 @@ void lcdDisplay(String top, String bottom) {
   displayLCDCenteredString(1, bottom);
 }
 
-void lcdSelector() {
+void lcdAutonomousSelector() {
   bool centerPressed = nLCDButtons == lcdCenter;
   bool autonomous = bIfiAutonomousMode;
 
