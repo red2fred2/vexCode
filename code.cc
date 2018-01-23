@@ -218,6 +218,48 @@ void nullifyRightDriveEncoder() {
 
 
 /****************************************************************
+///////////////////////// Auto Selector /////////////////////////
+****************************************************************/
+
+void lcdControl(int in) {
+  waitUntilTrue(in);
+
+  if(in == lcdleft) lcdSelection--;
+  if(in == lcdRight) lcdSelection++;
+
+  //only keep sane values
+  if(lcdSelection < 0) lcdSelection = 3;
+  if(lcdSelection > 3) lcdSelection = 0;
+
+  waitUntilFalse(in);
+}
+
+/////////////////////////////////////////////////////////////////
+
+void lcdDisplay(String top, String bottom) {
+  displayLCDCenteredString(0, top);
+  displayLCDCenteredString(1, bottom);
+}
+
+/////////////////////////////////////////////////////////////////
+
+void lcdAutonomousSelector() {
+  bool centerPressed = nLCDButtons == lcdCenter;
+  bool autonomous = bIfiAutonomousMode;
+
+  while(not(centerPressed or autonomous)) {
+    switch(lcdSelection) {
+      case 0: lcdDisplay("Autonomous 1", lcdEnterString); break;
+      case 1: lcdDisplay("Autonomous 2", lcdEnterString); break;
+      case 2: lcdDisplay("Autonomous 3", lcdEnterString); break;
+      case 3: lcdDisplay("Autonomous 4", lcdEnterString); break;
+    }
+    lcdControl(nLCDButtons);
+  }
+}
+
+
+/****************************************************************
 ///////////////////////// PID Functions /////////////////////////
 ****************************************************************/
 
@@ -482,14 +524,13 @@ void pre_auton() {
   nullifyRightDriveEncoder();
   clearLCDLine(0);
   clearLCDLine(1);
-
+  lcdAutonomousSelector();
 }
 
 /////////////////////////////////////////////////////////////////
 
 task autonomous() {
-  //routine
-  driveStraight(12);
+  rightAuto();
 }
 
 /////////////////////////////////////////////////////////////////
@@ -527,38 +568,7 @@ task usercontrol() {
 
 
 
-void lcdControl(int in) {
-  waitUntilTrue(in);
 
-  if(in == lcdleft) lcdSelection--;
-  if(in == lcdRight) lcdSelection++;
-
-  //only keep sane values
-  if(lcdSelection < 0) lcdSelection = 3;
-  if(lcdSelection > 3) lcdSelection = 0;
-
-  waitUntilFalse(in);
-}
-
-void lcdDisplay(String top, String bottom) {
-  displayLCDCenteredString(0, top);
-  displayLCDCenteredString(1, bottom);
-}
-
-void lcdAutonomousSelector() {
-  bool centerPressed = nLCDButtons == lcdCenter;
-  bool autonomous = bIfiAutonomousMode;
-
-  while(not(centerPressed or autonomous)) {
-    switch(lcdSelection) {
-      case 0: lcdDisplay("Autonomous 1", lcdEnterString); break;
-      case 1: lcdDisplay("Autonomous 2", lcdEnterString); break;
-      case 2: lcdDisplay("Autonomous 3", lcdEnterString); break;
-      case 3: lcdDisplay("Autonomous 4", lcdEnterString); break;
-    }
-    lcdControl(nLCDButtons);
-  }
-}
  
 
  
