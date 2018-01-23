@@ -598,6 +598,19 @@ task asyncAutoArm() {
 	autoArmFinished = true;
 }
 
+/////////////////////////////////////////////////////////////////
+
+task asyncAutoBaseLift() {
+	autoBaseLift(autoValue1, autoValue2, autoCondition);
+	autoBaseLiftFinished = true;
+}
+
+/////////////////////////////////////////////////////////////////
+
+task asyncAutoClaw() {
+	autoClaw(autoValue1, autoCondition);
+	autoClawFinished = true;
+}
 
 /****************************************************************
 ////////////////////////// Auto Groups //////////////////////////
