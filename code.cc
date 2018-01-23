@@ -326,8 +326,8 @@ int rightPI(double target, double actual) {
 
 /////////////////////////////////////////////////////////////////
 
-int leftPD(double target, double actual, double Pmult, double Dmult) {
-  return (int)(P(target, actual, Pmult) + leftD(target, actual, Dmult));
+int PD(double target, double actual) {
+  return (int)(P(target, actual) + leftD(target, actual));
 }
 int rightPD(double target, double actual, double Pmult, double Dmult) {
   return (int)(P(target, actual, Pmult) + leftD(target, actual, Dmult));
