@@ -102,6 +102,18 @@ bool tankMode = false;
 
 int lcdSelection = 0;
 
+/////////////////////////////////////////////////////////////////
+
+//synchronization locks
+bool autoDriveFinished = false;
+bool autoLeftSwingTurnFinished = false;
+bool autoRightSwingTurnFinished = false;
+bool autoLeftPivotTurnFinished = false;
+bool autoLiftFinished = false;
+bool autoBaseLiftFinished = false;
+bool autoArmFinished = false;
+bool autoClawFinished = false;
+
 
 /****************************************************************
 /////////////////////// Utility Functions ///////////////////////
@@ -472,7 +484,7 @@ void autoRightSwingTurn(double degrees) {
 
 /////////////////////////////////////////////////////////////////
 
-void autoLeftPivot(double degrees) {
+void autoLeftPivotTurn(double degrees) {
   resetLeftPID();
   resetRightPID();
 
@@ -485,7 +497,7 @@ void autoLeftPivot(double degrees) {
   );
 }
 
-void autoRightPivot(double degrees) {
+void autoRightPivotTurn(double degrees) {
   resetLeftPID();
   resetRightPID();
 
@@ -516,6 +528,13 @@ void autoArm(int power, double seconds) {
 
 void autoBaseLift(int left, int right, double seconds) {
   baseLift(left, right);
+  wait1Msec((int)(1000 * seconds));
+}
+
+/////////////////////////////////////////////////////////////////
+
+void autoClaw(int power, double seconds) {
+  claw(power);
   wait1Msec((int)(1000 * seconds));
 }
 
