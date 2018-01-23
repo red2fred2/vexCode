@@ -30,6 +30,8 @@ const int lcdCenter = 2;
 const int lcdRight = 4;
 const int lcdDelay = 5;
 
+const String lcdEnterString = "<         Enter        >";
+
 ////////////////////////////////////////////////////////////////
 
 //drivetrain
@@ -85,6 +87,8 @@ double rightIntegral = 0;
 double rightError = 0;
 
 bool tankMode = false;
+
+int lcdSelection = 0;
 
 
 /****************************************************************
@@ -474,6 +478,9 @@ void pre_auton() {
   //setup
   nullifyLeftDriveEncoder();
   nullifyRightDriveEncoder();
+  clearLCDLine(0);
+  clearLCDLine(1);
+
 }
 
 /////////////////////////////////////////////////////////////////
@@ -518,109 +525,46 @@ task usercontrol() {
 
 
 
+void lcdControl(int in) {
+  waitUntilTrue(in);
 
+  if(in == lcdleft) lcdSelection--;
+  if(in == lcdRight) lcdSelection++;
 
+  //only keep sane values
+  if(lcdSelection < 0) lcdSelection = 3;
+  if(lcdSelection > 3) lcdSelection = 0;
 
+  waitUntilFalse(in);
+}
+
+void lcdDisplay(String top, String bottom) {
+  displayLCDCenteredString(0, top);
+  displayLCDCenteredString(1, bottom);
+}
+
+void lcdSelector() {
+  while(nLCDButtons != lcdCenter) {
+    switch(lcdSelection) {
+      case 0: lcdDisplay("Autonomous 1", lcdEnterString); break;
+      case 1: lcdDisplay("Autonomous 2", lcdEnterString); break;
+      case 2: lcdDisplay("Autonomous 3", lcdEnterString); break;
+      case 3: lcdDisplay("Autonomous 4", lcdEnterString); break;
+    }
+    lcdControl(nLCDButtons);
+  }
+}
  
 
-
-task main()
-{
-//Declare count variable to keep track of our choice
-int count = 0;
- 
-//------------- Beginning of User Interface Code ---------------
-//Clear LCD
-clearLCDLine(0);
-clearLCDLine(1);
-//Loop while center button is not pressed
-while(nLCDButtons != lcdCenter)
-{
-//Switch case that allows the user to choose from 4 different options
-switch(count){
-case 0:
-//Display first choice
-displayLCDCenteredString(0, "Autonomous 1");
-displayLCDCenteredString(1, "<         Enter        >");
-waitForPress();
-//Increment or decrement "count" based on button press
-if(nLCDButtons == lcdLeft)
-{
-waitUntilFalse(nLCDButtons);
-count = 3;
-}
-else if(nLCDButtons == ldeRight)
-{
-waitUntilFalse(nLCDButtons);
-count++;
-}
-break;
-case 1:
-//Display second choice
-displayLCDCenteredString(0, "Autonomous 2");
-displayLCDCenteredString(1, "<         Enter        >");
-waitUntilTrue(nLCDButtons);
-//Increment or decrement "count" based on button press
-if(nLCDButtons == lcdLeft)
-{
-waitUntilFalse(nLCDButtons);
-count--;
-}
-else if(nLCDButtons == lcdRight)
-{
-waitUntilFalse(nLCDButtons);
-count++;
-}
-break;
-case 2:
-//Display third choice
-displayLCDCenteredString(0, "Autonomous 3");
-displayLCDCenteredString(1, "<         Enter        >");
-waitUntilTrue(nLCDButtons);
-//Increment or decrement "count" based on button press
-if(nLCDButtons == lcdLeft)
-{
-waitUntilFalse(nLCDButtons);
-count--;
-}
-else if(nLCDButtons == lcdRight)
-{
-waitUntilFalse(nLCDButtons);
-count++;
-}
-break;
-case 3:
-//Display fourth choice
-displayLCDCenteredString(0, "Autonomous 4");
-displayLCDCenteredString(1, "<         Enter        >");
-waitUntilTrue(nLCDButtons);
-//Increment or decrement "count" based on button press
-if(nLCDButtons == lcdLeft)
-{
-waitUntilFalse(nLCDButtons);
-count--;
-}
-else if(nLCDButtons == lcdRight)
-{
-waitUntilFalse(nLCDButtons);
-count = 0;
-}
-break;
-default:
-count = 0;
-break;
-}
-}
-//------------- End of User Interface Code ---------------------
  
 //------------- Beginning of Robot Movement Code ---------------
 //Clear LCD
 clearLCDLine(0);
 clearLCDLine(1);
 //Switch Case that actually runs the user choice
-switch(count){
+switch(lcdSelection){
 case 0:
-//If count = 0, run the code correspoinding with choice 1
+//If lcdSelection = 0, run the code correspoinding with choice 1
 displayLCDCenteredString(0, "Autonomous 1");
 displayLCDCenteredString(1, "is running!");
 wait1Msec(2000);                        // Robot waits for 2000 milliseconds
@@ -631,7 +575,7 @@ motor[leftMotor]    = 127;            // Motor on port3 is run at full (127) pow
 wait1Msec(3000);                            // Robot runs previous code for 3000 milliseconds before moving on
 break;
 case 1:
-//If count = 1, run the code correspoinding with choice 2
+//If lcdSelection = 1, run the code correspoinding with choice 2
 displayLCDCenteredString(0, "Autonomous 2");
 displayLCDCenteredString(1, "is running!");
 wait1Msec(2000);                        // Robot waits for 2000 milliseconds
@@ -642,7 +586,7 @@ motor[leftMotor]    = -127;            // Motor on port3 is run at full (-127) p
 wait1Msec(3000);                            // Robot runs previous code for 3000 milliseconds before moving on
 break;
 case 2:
-//If count = 2, run the code correspoinding with choice 3
+//If lcdSelection = 2, run the code correspoinding with choice 3
 displayLCDCenteredString(0, "Autonomous 3");
 displayLCDCenteredString(1, "is running!");
 wait1Msec(2000);                        // Robot waits for 2000 milliseconds
@@ -653,7 +597,7 @@ motor[leftMotor]    = 63;                // Motor on port3 is run at half power 
 wait1Msec(3000);                            // Robot runs previous code for 3000 milliseconds before moving on
 break;
 case 3:
-//If count = 3, run the code correspoinding with choice 4
+//If lcdSelection = 3, run the code correspoinding with choice 4
 displayLCDCenteredString(0, "Autonomous 4");
 displayLCDCenteredString(1, "is running!");
 wait1Msec(2000);                        // Robot waits for 2000 milliseconds
@@ -669,4 +613,3 @@ displayLCDCenteredString(1, "was made!");
 break;
 }
 //------------- End of Robot Movement Code -----------------------
-}
