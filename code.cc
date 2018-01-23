@@ -377,18 +377,17 @@ void pre_auton() {
 task autonomous() {
   //routine
   driveStraight(12);
-
-  //cleanup
-  nullifyLeftDriveEncoder();
-  nullifyRightDriveEncoder();
 }
 
 /////////////////////////////////////////////////////////////////
 
 task usercontrol() {
-  while(true) {
-    //automatic
+  //setup
+  nullifyLeftDriveEncoder();
+  nullifyRightDriveEncoder();
 
+  //loop
+  while(true) {
     //driver
     if(VexRT(Btn6U)) {
       if(!buttonLock) {
