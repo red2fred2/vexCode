@@ -272,7 +272,7 @@ void baseLiftControl() {
 //////////////////////// Auto Functions /////////////////////////
 ****************************************************************/
 
-void driveStraight(double inches) {
+void autoDrive(double inches) {
   resetLeftPID();
   resetRightPID();
 
@@ -287,7 +287,7 @@ void driveStraight(double inches) {
 
 /////////////////////////////////////////////////////////////////
 
-void leftSwingTurn(double degrees) {
+void autoLeftSwingTurn(double degrees) {
   resetLeftPID();
   resetRightPID();
 
@@ -300,7 +300,7 @@ void leftSwingTurn(double degrees) {
   );
 }
 
-void rightSwingTurn(double degrees) {
+void autoRightSwingTurn(double degrees) {
   resetLeftPID();
   resetRightPID();
 
@@ -315,7 +315,7 @@ void rightSwingTurn(double degrees) {
 
 /////////////////////////////////////////////////////////////////
 
-void leftPivot(double degrees) {
+void autoLeftPivot(double degrees) {
   resetLeftPID();
   resetRightPID();
 
@@ -328,7 +328,7 @@ void leftPivot(double degrees) {
   );
 }
 
-void rightPivot(double degrees) {
+void autoRightPivot(double degrees) {
   resetLeftPID();
   resetRightPID();
 
@@ -364,6 +364,21 @@ void autoBaseLift(int left, int right, double seconds) {
 
 
 /****************************************************************
+////////////////////////// Auto Groups //////////////////////////
+****************************************************************/
+
+void leftAuto() {
+
+}
+
+/////////////////////////////////////////////////////////////////
+
+void rightAuto() {
+
+}
+
+
+/****************************************************************
 ///////////////////////////// Main //////////////////////////////
 ****************************************************************/
 void pre_auton() {
@@ -386,6 +401,8 @@ task usercontrol() {
   nullifyLeftDriveEncoder();
   nullifyRightDriveEncoder();
 
+/////////////////////////////////////////////////////////////////
+
   //loop
   while(true) {
     //driver
@@ -403,6 +420,8 @@ task usercontrol() {
     } else {
       joystickDrive();
     }
+
+/////////////////////////////////////////////////////////////////
 
     //copilot
     liftControl();
