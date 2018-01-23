@@ -21,6 +21,9 @@ const double rightIMult                   = 1.0;
 const double rightDMult                   = 1.0;
 
 const double inchesPerWheelRotation       = 1.0;
+const double inchesPerSwingTurnDegree     = 1.0;
+const double inchesPerPivotDegree         = 1.0;
+
 const double leftEncoderTicksPerRotation  = 100.0;
 const double rightEncoderTicksPerRotation = 100.0;
 const int leftTicksPerInch = (int)(leftEncoderTicksPerRotation / inchesPerWheelRotation);
@@ -282,6 +285,62 @@ void driveStraight(double inches) {
   );
 }
 
+/////////////////////////////////////////////////////////////////
+
+void leftSwingTurn(double degrees) {
+  resetLeftPID();
+  resetRightPID();
+
+  int leftTicks = inchesPerSwingTurnDegree * leftTicksPerInch * degrees + getLeftDriveEncoder;
+  int rightTicks = 0;
+
+  drive(
+    leftPID(leftTicks, getLeftDriveEncoder, leftPMult, leftIMult, leftDMult),
+    rightPID(rightTicks, getRightDriveEncoder, rightPMult, rightIMult, rightDMult)
+  );
+}
+
+void rightSwingTurn(double degrees) {
+  resetLeftPID();
+  resetRightPID();
+
+  int leftTicks = 0;
+  int rightTicks = inchesPerSwingTurnDegree * leftTicksPerInch * degrees + getRightDriveEncoder;
+
+  drive(
+    leftPID(leftTicks, getLeftDriveEncoder, leftPMult, leftIMult, leftDMult),
+    rightPID(rightTicks, getRightDriveEncoder, rightPMult, rightIMult, rightDMult)
+  );
+}
+
+/////////////////////////////////////////////////////////////////
+
+void leftPivot(double degrees) {
+  resetLeftPID();
+  resetRightPID();
+
+  int leftTicks = inchesPerPivotDegree * leftTicksPerInch * degrees + getLeftDriveEncoder;
+  int rightTicks = -(inchesPerPivotDegree * rightTicksPerInch * degrees + getRightDriveEncoder);
+
+  drive(
+    leftPID(leftTicks, getLeftDriveEncoder, leftPMult, leftIMult, leftDMult),
+    rightPID(rightTicks, getRightDriveEncoder, rightPMult, rightIMult, rightDMult)
+  );
+}
+
+void rightPivot(double degrees) {
+  resetLeftPID();
+  resetRightPID();
+
+  int leftTicks = -(inchesPerPivotDegree * leftTicksPerInch * degrees + getLeftDriveEncoder);
+  int rightTicks = inchesPerPivotDegree * rightTicksPerInch * degrees + getRightDriveEncoder;
+
+  drive(
+    leftPID(leftTicks, getLeftDriveEncoder, leftPMult, leftIMult, leftDMult),
+    rightPID(rightTicks, getRightDriveEncoder, rightPMult, rightIMult, rightDMult)
+  );
+}
+
 
 /****************************************************************
 ///////////////////////////// Main //////////////////////////////
@@ -296,7 +355,7 @@ void pre_auton() {
 
 task autonomous() {
   //routine
-
+  driveStraight(12);
 
   //cleanup
   nullifyLeftDriveEncoder();
