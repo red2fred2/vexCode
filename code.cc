@@ -341,6 +341,27 @@ void rightPivot(double degrees) {
   );
 }
 
+/////////////////////////////////////////////////////////////////
+
+void autoLift(int left, int right, double seconds) {
+  lift(left, right);
+  wait1Msec((int)(1000 * seconds));
+}
+
+/////////////////////////////////////////////////////////////////
+
+void autoArm(int power, double seconds) {
+  arm(power);
+  wait1Msec((int)(1000 * seconds));
+}
+
+/////////////////////////////////////////////////////////////////
+
+void autoBaseLift(int left, int right, double seconds) {
+  baseLift(left, right);
+  wait1Msec((int)(1000 * seconds));
+}
+
 
 /****************************************************************
 ///////////////////////////// Main //////////////////////////////
