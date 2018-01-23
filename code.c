@@ -105,6 +105,9 @@ int lcdSelection = 0;
 /////////////////////////////////////////////////////////////////
 
 //robotC is dumb... or maybe I am
+int autoValue1 = 0;
+int autoValue2 = 0;
+int autoCondition = 0;
 
 /////////////////////////////////////////////////////////////////
 
@@ -544,10 +547,66 @@ void autoClaw(int power, double seconds) {
 
 
 /****************************************************************
+////////////////////// Async Auto Functions /////////////////////
+****************************************************************/
+
+//robotC is stupid, so this garbage has to be here
+task asyncAutoDrive() {
+	autoDrive(autoValue1, autoValue2, autoCondition);
+	autoDriveFinished = true;
+}
+
+/////////////////////////////////////////////////////////////////
+
+task asyncAutoLeftSwingTurn() {
+	autoDrive(autoValue1, autoValue2, autoCondition);
+	autoDriveFinished = true;
+}
+
+/////////////////////////////////////////////////////////////////
+
+task asyncAutoRightSwingTurn() {
+	autoLeftSwingTurn(autoValue1, autoValue2, autoCondition);
+	autoLeftSwingTurnFinished = true;
+}
+
+/////////////////////////////////////////////////////////////////
+
+task asyncAutoLeftPivotTurn() {
+	autoLeftPivotTurn(autoValue1, autoValue2, autoCondition);
+	autoLeftPivotTurnFinished = true;
+}
+
+/////////////////////////////////////////////////////////////////
+
+task asyncAutoRightPivotTurn() {
+	autoRightPivotTurn(autoValue1, autoValue2, autoCondition);
+	autoRightPivotTurnFinished = true;
+}
+
+/////////////////////////////////////////////////////////////////
+
+task asyncAutoLift() {
+	autoLift(autoValue1, autoValue2, autoCondition);
+	autoLiftFinished = true;
+}
+
+/////////////////////////////////////////////////////////////////
+
+task asyncAutoArm() {
+	autoArm(autoValue1, autoCondition);
+	autoArmFinished = true;
+}
+
+
+/****************************************************************
 ////////////////////////// Auto Groups //////////////////////////
 ****************************************************************/
 
 void leftAuto() {
+
+
+
   //drive off bar
   autoDrive(4);
   //turn to match tile
