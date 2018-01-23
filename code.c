@@ -476,8 +476,8 @@ void autoLeftPivot(double degrees) {
   resetLeftPID();
   resetRightPID();
 
-  int leftTicks = inchesPerPivotDegree * leftTicksPerInch * degrees + getLeftDriveEncoder;
-  int rightTicks = -(inchesPerPivotDegree * rightTicksPerInch * degrees + getRightDriveEncoder);
+  int leftTicks = -inchesPerPivotDegree * leftTicksPerInch * degrees + getLeftDriveEncoder;
+  int rightTicks = (inchesPerPivotDegree * rightTicksPerInch * degrees + getRightDriveEncoder);
 
   drive(
     leftPID(leftTicks, getLeftDriveEncoder, leftPMult, leftIMult, leftDMult),
@@ -489,8 +489,8 @@ void autoRightPivot(double degrees) {
   resetLeftPID();
   resetRightPID();
 
-  int leftTicks = -(inchesPerPivotDegree * leftTicksPerInch * degrees + getLeftDriveEncoder);
-  int rightTicks = inchesPerPivotDegree * rightTicksPerInch * degrees + getRightDriveEncoder;
+  int leftTicks = (inchesPerPivotDegree * leftTicksPerInch * degrees + getLeftDriveEncoder);
+  int rightTicks = -inchesPerPivotDegree * rightTicksPerInch * degrees + getRightDriveEncoder;
 
   drive(
     leftPID(leftTicks, getLeftDriveEncoder, leftPMult, leftIMult, leftDMult),
