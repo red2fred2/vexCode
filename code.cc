@@ -368,12 +368,36 @@ void autoBaseLift(int left, int right, double seconds) {
 ****************************************************************/
 
 void leftAuto() {
+  //drive off bar
+  autoDrive(4);
+  //turn to match tile
+  autoLeftSwingTurn(45);
+  //raise lift to clear base
+  autoLift(127, 127, 1.0);
+  //drive to right mobile base
+  autoDrive(30);
+  //move arm to front limit
+  autoArm(127, 1.0);
+  //lift base
+  autoBaseLift(127, 127, 0.5);
 
 }
 
 /////////////////////////////////////////////////////////////////
 
 void rightAuto() {
+  //drive off bar
+  autoDrive(4);
+  //turn to match tile
+  autoRightSwingTurn(45);
+  //raise lift to clear base
+  autoLift(127, 127, 1.0);
+  //drive to right mobile base
+  autoDrive(30);
+  //move arm to front limit
+  autoArm(127, 1.0);
+  //lift base
+  autoBaseLift(127, 127, 0.5);
 
 }
 
