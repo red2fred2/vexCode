@@ -18,6 +18,7 @@ const double inchesPerPivotDegree         = 1.0;
 
 const double leftEncoderTicksPerRotation  = 100.0;
 const double rightEncoderTicksPerRotation = 100.0;
+
 const int leftTicksPerInch = (int)(leftEncoderTicksPerRotation / inchesPerWheelRotation);
 const int rightTicksPerInch = (int)(rightEncoderTicksPerRotation / inchesPerWheelRotation);
 
@@ -25,28 +26,29 @@ const int rightTicksPerInch = (int)(rightEncoderTicksPerRotation / inchesPerWhee
 
 //lcd
 
-const int lcdLeft = 1;
+const int lcdLeft   = 1;
 const int lcdCenter = 2;
-const int lcdRight = 4;
-const int lcdDelay = 5;
+const int lcdRight  = 4;
+const int lcdDelay  = 5;
 
 const String lcdEnterString = "<         Enter        >";
+const String lcdIsRunningString = "is running!";
 
 ////////////////////////////////////////////////////////////////
 
 //drivetrain
-const int leftDriveDeadzone               = 10;
-const double leftDriveMult                = 1.0;
-const int rightDriveDeadzone              = 10;
-const double rightDriveMult               = 1.0;
+const int leftDriveDeadzone  = 10;
+const double leftDriveMult   = 1.0;
+const int rightDriveDeadzone = 10;
+const double rightDriveMult  = 1.0;
 
-const double leftPMult                    = 1.0;
-const double leftIMult                    = 1.0;
-const double leftDMult                    = 1.0;
+const double leftPMult       = 1.0;
+const double leftIMult       = 1.0;
+const double leftDMult       = 1.0;
 
-const double rightPMult                   = 1.0;
-const double rightIMult                   = 1.0;
-const double rightDMult                   = 1.0;
+const double rightPMult      = 1.0;
+const double rightIMult      = 1.0;
+const double rightDMult      = 1.0;
 
 ////////////////////////////////////////////////////////////////
 
@@ -117,7 +119,7 @@ int expoCurve(int in) {
 /////////////////////////////////////////////////////////////////
 
 void waitUntilTrue(bool in) {
-  while(!in) {}
+  while(not in) {}
   wait1Msec(lcdDelay);
 }
 
@@ -505,7 +507,7 @@ task usercontrol() {
     //driver
     if(VexRT(Btn6U)) {
       waitUntilFalse(VexRT(Btn6U));
-      tankMode = !tankMode;
+      tankMode = not tankMode;
     }
 
     if(tankMode) {
@@ -544,7 +546,10 @@ void lcdDisplay(String top, String bottom) {
 }
 
 void lcdSelector() {
-  while(nLCDButtons != lcdCenter) {
+  bool centerPressed = nLCDButtons == lcdCenter;
+  bool autonomous = bIfiAutonomousMode;
+
+  while(not(centerPressed or autonomous)) {
     switch(lcdSelection) {
       case 0: lcdDisplay("Autonomous 1", lcdEnterString); break;
       case 1: lcdDisplay("Autonomous 2", lcdEnterString); break;
