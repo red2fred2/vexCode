@@ -42,11 +42,9 @@ const double leftDriveMult   = 1.0;
 const int rightDriveDeadzone = 10;
 const double rightDriveMult  = 1.0;
 
-const double leftPMult       = 1.0;
+const double PMult           = 1.0;
 const double leftIMult       = 1.0;
 const double leftDMult       = 1.0;
-
-const double rightPMult      = 1.0;
 const double rightIMult      = 1.0;
 const double rightDMult      = 1.0;
 
@@ -287,15 +285,15 @@ void runAuto() {
 ///////////////////////// PID Functions /////////////////////////
 ****************************************************************/
 
-double P(double target, double actual, double Pmult) {
+double P(double target, double actual) {
   return Pmult * (target - actual);
 }
 
 /////////////////////////////////////////////////////////////////
 
-double leftI(double target, double actual, double Pmult, double Imult) {
-  leftIntegral += P(target, actual, Pmult);
-  return Imult * leftIntegral;
+double leftI(double target, double actual) {
+  leftIntegral += P(target, actual);
+  return leftIMult * leftIntegral;
 }
 double rightI(double target, double actual, double Pmult, double Imult) {
   rightIntegral += P(target, actual, Pmult);
