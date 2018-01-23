@@ -42,11 +42,9 @@ const double leftDriveMult   = 1.0;
 const int rightDriveDeadzone = 10;
 const double rightDriveMult  = 1.0;
 
-const double PMult           = 1.0;
-const double leftIMult       = 1.0;
-const double leftDMult       = 1.0;
-const double rightIMult      = 1.0;
-const double rightDMult      = 1.0;
+const double Pmult           = 1.0;
+const double Imult           = 1.0;
+const double Dmult           = 1.0;
 
 ////////////////////////////////////////////////////////////////
 
@@ -103,7 +101,7 @@ int deadzone(int value, int deadzone) {
 /////////////////////////////////////////////////////////////////
 
 int applyMult(int value, double multiplier) {
-  int val = (double) value;
+  int val = (double)value;
   return (int)(val * multiplier);
 }
 
@@ -117,7 +115,7 @@ int expoCurve(int in) {
 /////////////////////////////////////////////////////////////////
 
 void waitUntilTrue(bool in) {
-  while(not in) {}
+  while(!in) {}
   wait1Msec(lcdDelay);
 }
 
@@ -180,7 +178,7 @@ void baseLift(int left, int right) {
   int deadleft = deadzone(left, leftBaseLiftDeadzone);
   int multLeft = applyMult(deadleft, leftBaseLiftMult);
   motor[baseLiftLeft] = multLeft;
-  
+
   int deadRight = deadzone(right, rightBaseLiftDeadzone);
   int multRight = applyMult(deadRight, rightBaseLiftMult);
   motor[baseLiftRight] = multRight;
@@ -247,7 +245,7 @@ void lcdAutonomousSelector() {
   bool centerPressed = nLCDButtons == lcdCenter;
   bool autonomous = bIfiAutonomousMode;
 
-  while(not(centerPressed or autonomous)) {
+  while(!(centerPressed || autonomous)) {
     switch(lcdSelection) {
       case 0: lcdDisplay("Left Auto", lcdEnterString); break;
       case 1: lcdDisplay("Right Auto", lcdEnterString); break;
@@ -275,7 +273,7 @@ void runAuto() {
     break;
     case 3:
       lcdDisplay("Nothing", lcdIsRunningString);
-    break; 
+    break;
     default: lcdDisplay("Invalid", "lcdSelection"); break;
   }
 }
@@ -568,7 +566,7 @@ task usercontrol() {
     //driver
     if(VexRT(Btn6U)) {
       waitUntilFalse(VexRT(Btn6U));
-      tankMode = not tankMode;
+      tankMode = !tankMode;
     }
 
     if(tankMode) {
