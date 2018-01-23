@@ -9,8 +9,8 @@
 
 //general
 
-const double expoMult = 0.039579;
-const int expoPow = 3;
+const double expoMult                     = 0.039579;
+const int expoPow                         = 3;
 
 const double inchesPerWheelRotation       = 1.0;
 const double inchesPerSwingTurnDegree     = 1.0;
@@ -20,6 +20,15 @@ const double leftEncoderTicksPerRotation  = 100.0;
 const double rightEncoderTicksPerRotation = 100.0;
 const int leftTicksPerInch = (int)(leftEncoderTicksPerRotation / inchesPerWheelRotation);
 const int rightTicksPerInch = (int)(rightEncoderTicksPerRotation / inchesPerWheelRotation);
+
+////////////////////////////////////////////////////////////////
+
+//lcd
+
+const int lcdLeft = 1;
+const int lcdCenter = 2;
+const int lcdRight = 4;
+const int lcdDelay = 5;
 
 ////////////////////////////////////////////////////////////////
 
@@ -76,7 +85,6 @@ double rightIntegral = 0;
 double rightError = 0;
 
 bool tankMode = false;
-bool buttonLock = false;
 
 
 /****************************************************************
@@ -100,6 +108,20 @@ int applyMult(int value, double multiplier) {
 int expoCurve(int in) {
   double base = expoMult * in;
   return (int)(pow(base, expoPow));
+}
+
+/////////////////////////////////////////////////////////////////
+
+void waitUntilTrue(bool in) {
+  while(!in) {}
+  wait1Msec(lcdDelay);
+}
+
+/////////////////////////////////////////////////////////////////
+
+void waitUntilFalse(bool in) {
+  while(in) {}
+  wait1Msec(lcdDelay);
 }
 
 /////////////////////////////////////////////////////////////////
@@ -472,14 +494,11 @@ task usercontrol() {
 
   //loop
   while(true) {
+
     //driver
     if(VexRT(Btn6U)) {
-      if(!buttonLock) {
-        tankMode = !tankMode;
-      }
-      buttonLock = true;
-    } else {
-      buttonLock = false;
+      waitUntilFalse(VexRT(Btn6U));
+      tankMode = !tankMode;
     }
 
     if(tankMode) {
@@ -487,8 +506,6 @@ task usercontrol() {
     } else {
       joystickDrive();
     }
-
-/////////////////////////////////////////////////////////////////
 
     //copilot
     liftControl();
@@ -503,26 +520,10 @@ task usercontrol() {
 
 
 
-const int lcdLeft = 1;
-const int lcdCenter = 2;
-const int lcdRight = 4;
+
  
-//Wait for Press--------------------------------------------------
-void waitForPress()
-{
-while(nLCDButtons == 0){}
-wait1Msec(5);
-}
-//----------------------------------------------------------------
- 
-//Wait for Release------------------------------------------------
-void waitForRelease()
-{
-while(nLCDButtons != 0){}
-wait1Msec(5);
-}
-//----------------------------------------------------------------
- 
+
+
 task main()
 {
 //Declare count variable to keep track of our choice
@@ -545,12 +546,12 @@ waitForPress();
 //Increment or decrement "count" based on button press
 if(nLCDButtons == lcdLeft)
 {
-waitForRelease();
+waitUntilFalse(nLCDButtons);
 count = 3;
 }
 else if(nLCDButtons == ldeRight)
 {
-waitForRelease();
+waitUntilFalse(nLCDButtons);
 count++;
 }
 break;
@@ -558,16 +559,16 @@ case 1:
 //Display second choice
 displayLCDCenteredString(0, "Autonomous 2");
 displayLCDCenteredString(1, "<         Enter        >");
-waitForPress();
+waitUntilTrue(nLCDButtons);
 //Increment or decrement "count" based on button press
 if(nLCDButtons == lcdLeft)
 {
-waitForRelease();
+waitUntilFalse(nLCDButtons);
 count--;
 }
 else if(nLCDButtons == lcdRight)
 {
-waitForRelease();
+waitUntilFalse(nLCDButtons);
 count++;
 }
 break;
@@ -575,16 +576,16 @@ case 2:
 //Display third choice
 displayLCDCenteredString(0, "Autonomous 3");
 displayLCDCenteredString(1, "<         Enter        >");
-waitForPress();
+waitUntilTrue(nLCDButtons);
 //Increment or decrement "count" based on button press
 if(nLCDButtons == lcdLeft)
 {
-waitForRelease();
+waitUntilFalse(nLCDButtons);
 count--;
 }
 else if(nLCDButtons == lcdRight)
 {
-waitForRelease();
+waitUntilFalse(nLCDButtons);
 count++;
 }
 break;
@@ -592,16 +593,16 @@ case 3:
 //Display fourth choice
 displayLCDCenteredString(0, "Autonomous 4");
 displayLCDCenteredString(1, "<         Enter        >");
-waitForPress();
+waitUntilTrue(nLCDButtons);
 //Increment or decrement "count" based on button press
 if(nLCDButtons == lcdLeft)
 {
-waitForRelease();
+waitUntilFalse(nLCDButtons);
 count--;
 }
 else if(nLCDButtons == lcdRight)
 {
-waitForRelease();
+waitUntilFalse(nLCDButtons);
 count = 0;
 }
 break;
