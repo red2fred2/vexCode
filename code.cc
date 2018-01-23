@@ -131,24 +131,24 @@ void nullifyRightDriveEncoder() {
 ///////////////////////// PID Functions /////////////////////////
 ****************************************************************/
 
-double p(double target, double actual, double mult) {
-  return mult * (target - actual);
+double p(double target, double actual, double Pmult) {
+  return Pmult * (target - actual);
 }
 
 /////////////////////////////////////////////////////////////////
 
-double i(double target, double actual, double mult) {
-  driveI += p(target, actual, mult);
-  return driveIntegral;
+double i(double target, double actual, double Pmult, double Imult) {
+  driveI += p(target, actual, Pmult);
+  return Imult * driveIntegral;
 }
 
 /////////////////////////////////////////////////////////////////
 
-double d(double target, double actual, double mult) {
-  double newError = p(target, actual, mult);
+double d(double target, double actual, double Pmult, double Dmult) {
+  double newError = p(target, actual, Pmult);
   double diff = newError - driveError;
   driveError = newError;
-  return mult * (newError);
+  return Dmult * newError;
 }
 
 /////////////////////////////////////////////////////////////////
