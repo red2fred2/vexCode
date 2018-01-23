@@ -237,6 +237,8 @@ void lcdControl(int in) {
 /////////////////////////////////////////////////////////////////
 
 void lcdDisplay(String top, String bottom) {
+  clearLCDLine(0);
+  clearLCDLine(1);
   displayLCDCenteredString(0, top);
   displayLCDCenteredString(1, bottom);
 }
@@ -249,12 +251,34 @@ void lcdAutonomousSelector() {
 
   while(not(centerPressed or autonomous)) {
     switch(lcdSelection) {
-      case 0: lcdDisplay("Autonomous 1", lcdEnterString); break;
-      case 1: lcdDisplay("Autonomous 2", lcdEnterString); break;
-      case 2: lcdDisplay("Autonomous 3", lcdEnterString); break;
-      case 3: lcdDisplay("Autonomous 4", lcdEnterString); break;
+      case 0: lcdDisplay("Left Auto", lcdEnterString); break;
+      case 1: lcdDisplay("Right Auto", lcdEnterString); break;
+      case 2: lcdDisplay("Nothing", lcdEnterString); break;
+      case 3: lcdDisplay("Nothing", lcdEnterString); break;
     }
     lcdControl(nLCDButtons);
+  }
+}
+
+/////////////////////////////////////////////////////////////////
+
+void runAuto() {
+  switch(lcdSelection) {
+    case 0:
+      lcdDisplay("Left Auto", lcdIsRunningString);
+      leftAuto();
+    break;
+    case 1:
+      lcdDisplay("Right Auto", lcdIsRunningString);
+      rightAuto();
+    break;
+    case 2:
+      lcdDisplay("Nothing", lcdIsRunningString);
+    break;
+    case 3:
+      lcdDisplay("Nothing", lcdIsRunningString);
+    break; 
+    default: lcdDisplay("Invalid", "lcdSelection"); break;
   }
 }
 
@@ -522,15 +546,13 @@ void pre_auton() {
   //setup
   nullifyLeftDriveEncoder();
   nullifyRightDriveEncoder();
-  clearLCDLine(0);
-  clearLCDLine(1);
   lcdAutonomousSelector();
 }
 
 /////////////////////////////////////////////////////////////////
 
 task autonomous() {
-  rightAuto();
+  runAuto();
 }
 
 /////////////////////////////////////////////////////////////////
@@ -563,68 +585,3 @@ task usercontrol() {
     baseLiftControl();
   }
 }
-
-
-
-
-
-
- 
-
- 
-//------------- Beginning of Robot Movement Code ---------------
-//Clear LCD
-clearLCDLine(0);
-clearLCDLine(1);
-//Switch Case that actually runs the user choice
-switch(lcdSelection){
-case 0:
-//If lcdSelection = 0, run the code correspoinding with choice 1
-displayLCDCenteredString(0, "Autonomous 1");
-displayLCDCenteredString(1, "is running!");
-wait1Msec(2000);                        // Robot waits for 2000 milliseconds
- 
-// Move forward at full power for 3 seconds
-motor[rightMotor] = 127;            // Motor on port2 is run at full (127) power forward
-motor[leftMotor]    = 127;            // Motor on port3 is run at full (127) power forward
-wait1Msec(3000);                            // Robot runs previous code for 3000 milliseconds before moving on
-break;
-case 1:
-//If lcdSelection = 1, run the code correspoinding with choice 2
-displayLCDCenteredString(0, "Autonomous 2");
-displayLCDCenteredString(1, "is running!");
-wait1Msec(2000);                        // Robot waits for 2000 milliseconds
- 
-// Move reverse at full power for 3 seconds
-motor[rightMotor] = -127;            // Motor on port2 is run at full (-127) power reverse
-motor[leftMotor]    = -127;            // Motor on port3 is run at full (-127) power reverse
-wait1Msec(3000);                            // Robot runs previous code for 3000 milliseconds before moving on
-break;
-case 2:
-//If lcdSelection = 2, run the code correspoinding with choice 3
-displayLCDCenteredString(0, "Autonomous 3");
-displayLCDCenteredString(1, "is running!");
-wait1Msec(2000);                        // Robot waits for 2000 milliseconds
- 
-//Turn right for 3seconds
-motor[rightMotor] = -63;            // Motor on port2 is run at half power reverse
-motor[leftMotor]    = 63;                // Motor on port3 is run at half power forward
-wait1Msec(3000);                            // Robot runs previous code for 3000 milliseconds before moving on
-break;
-case 3:
-//If lcdSelection = 3, run the code correspoinding with choice 4
-displayLCDCenteredString(0, "Autonomous 4");
-displayLCDCenteredString(1, "is running!");
-wait1Msec(2000);                        // Robot waits for 2000 milliseconds
- 
-//Turn left for 3 seconds
-motor[rightMotor] = 63;                // Motor on port2 is run at half power forward
-motor[leftMotor]    = -63;            // Motor on port3 is run at half power reverse
-wait1Msec(3000);                            // Robot runs previous code for 3000 milliseconds before moving on
-break;
-default:
-displayLCDCenteredString(0, "No valid choice");
-displayLCDCenteredString(1, "was made!");
-break;
-}
-//------------- End of Robot Movement Code -----------------------
