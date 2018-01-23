@@ -31,8 +31,8 @@ const int lcdCenter = 2;
 const int lcdRight  = 4;
 const int lcdDelay  = 5;
 
-const String lcdEnterString = "<         Enter        >";
-const String lcdIsRunningString = "is running!";
+const string lcdEnterString = "<         Enter        >";
+const string lcdIsRunningString = "is running!";
 
 ////////////////////////////////////////////////////////////////
 
@@ -232,7 +232,7 @@ void lcdControl(int in) {
 
 /////////////////////////////////////////////////////////////////
 
-void lcdDisplay(String top, String bottom) {
+void lcdDisplay(string top, string bottom) {
   clearLCDLine(0);
   clearLCDLine(1);
   displayLCDCenteredString(0, top);
