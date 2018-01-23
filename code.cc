@@ -6,6 +6,22 @@
 ////////////////////////// Constants ////////////////////////////
 ****************************************************************/
 
+//general
+
+const double expoMult = 0.039579;
+const int expoPow = 3;
+
+const double inchesPerWheelRotation       = 1.0;
+const double inchesPerSwingTurnDegree     = 1.0;
+const double inchesPerPivotDegree         = 1.0;
+
+const double leftEncoderTicksPerRotation  = 100.0;
+const double rightEncoderTicksPerRotation = 100.0;
+const int leftTicksPerInch = (int)(leftEncoderTicksPerRotation / inchesPerWheelRotation);
+const int rightTicksPerInch = (int)(rightEncoderTicksPerRotation / inchesPerWheelRotation);
+
+////////////////////////////////////////////////////////////////
+
 //drivetrain
 const int leftDriveDeadzone               = 10;
 const double leftDriveMult                = 1.0;
@@ -19,16 +35,6 @@ const double leftDMult                    = 1.0;
 const double rightPMult                   = 1.0;
 const double rightIMult                   = 1.0;
 const double rightDMult                   = 1.0;
-
-const double inchesPerWheelRotation       = 1.0;
-const double inchesPerSwingTurnDegree     = 1.0;
-const double inchesPerPivotDegree         = 1.0;
-
-const double leftEncoderTicksPerRotation  = 100.0;
-const double rightEncoderTicksPerRotation = 100.0;
-const int leftTicksPerInch = (int)(leftEncoderTicksPerRotation / inchesPerWheelRotation);
-const int rightTicksPerInch = (int)(rightEncoderTicksPerRotation / inchesPerWheelRotation);
-
 
 ////////////////////////////////////////////////////////////////
 
@@ -90,6 +96,13 @@ int applyMult(int value, double multiplier) {
 
 /////////////////////////////////////////////////////////////////
 
+int expoCurve(int in) {
+  double base = expoMult * in;
+  return (int)(pow(base, expoPow));
+}
+
+/////////////////////////////////////////////////////////////////
+
 void drive(int left, int right) {
   int deadLeft = deadzone(left, leftDriveDeadzone);
   int multLeft = applyMult(deadLeft, leftDriveMult);
@@ -97,6 +110,20 @@ void drive(int left, int right) {
 
   int deadRight = deadzone(right);
   int multRight = applyMult(deadRight, rightDriveMult);
+  motor[rightDrive] = multRight;
+}
+
+/////////////////////////////////////////////////////////////////
+
+void expoDrive(int left, int right) {
+  int deadLeft = deadzone(left, leftDriveDeadzone);
+  int expoLeft = expoCurve(deadLeft);
+  int multLeft = applyMult(expoLeft, leftDriveMult);
+  motor[leftDrive] = multLeft;
+
+  int deadRight = deadzone(right);
+  int expoRight = expoCurve(deadRight);
+  int multRight = applyMult(expoRight, rightDriveMult);
   motor[rightDrive] = multRight;
 }
 
@@ -250,7 +277,7 @@ void resetRightPID() {
 void tankDrive() {
   int left = VexRT(Ch3);
   int right = VexRT(Ch2);
-  drive(left, right);
+  expoDrive(left, right);
 }
 
 /////////////////////////////////////////////////////////////////
@@ -258,7 +285,7 @@ void tankDrive() {
 void joystickDrive() {
   int up = vexRT(Ch3);
   int right = vexRT(Ch4);
-  drive(up + right, up - right);
+  expoDrive(up + right, up - right);
 }
 
 /////////////////////////////////////////////////////////////////
