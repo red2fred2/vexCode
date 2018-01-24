@@ -688,9 +688,26 @@ void leftAuto() {
   autoDrive(12);
   pickupCone();
 
-  //drive to scoring zone
+  //drive to scoring zone and score
   autoDrive(36);
   autoLeftSwingTurn(45);
+  autoBaseLift(-64, -64, 1.0);
+
+  //back away and get ready
+  autoDrive(-27);
+  autoLeftPivotTurn(90 + 45);
+
+  //drive around the right side
+  autoDrive(48);
+  autoLeftPivotTurn(90);
+  autoDrive(24);
+
+  //grab right center base
+  autoLeftSwingTurn(45);
+  autoDrive(22);
+  autoBaseLift(127, 127, 1.0);
+
+  //grab center cones
 }
 
 /////////////////////////////////////////////////////////////////
