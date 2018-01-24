@@ -206,7 +206,7 @@ void expoDrive(int left, int right) {
 /////////////////////////////////////////////////////////////////
 
 void lift(int left, int right) {
-  int deadleft = deadzone(left, leftLiftDeadzone);
+  int deadLeft = deadzone(left, leftLiftDeadzone);
   int multLeft = applyMult(deadLeft, leftLiftMult);
   motor[leftLift] = multLeft;
 
@@ -271,7 +271,7 @@ void nullifyRightDriveEncoder() {
 void lcdControl(int in) {
   waitUntilTrue(in);
 
-  if(in == lcdleft) lcdSelection--;
+  if(in == lcdLeft) lcdSelection--;
   if(in == lcdRight) lcdSelection++;
 
   //only keep sane values
@@ -355,13 +355,13 @@ float leftD(float target, float actual) {
   float newError = target - actual;
   float diff = newError - leftError;
   leftError = newError;
-  return Dmult * newError;
+  return Dmult * diff;
 }
 float rightD(float target, float actual) {
   float newError = target - actual;
   float diff = newError - rightError;
   rightError = newError;
-  return Dmult * newError;
+  return Dmult * diff;
 }
 
 /////////////////////////////////////////////////////////////////
