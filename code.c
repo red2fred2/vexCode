@@ -105,8 +105,6 @@ int lcdSelection = 0;
 /////////////////////////////////////////////////////////////////
 
 //robotC is dumb... or maybe I am
-int autoDriveLeftArg;
-int autoDriveRightArg;
 int autoDriveInchesArg;
 
 int autoLeftSwingTurnDegreesArg;
@@ -135,6 +133,7 @@ bool autoDriveFinished = false;
 bool autoLeftSwingTurnFinished = false;
 bool autoRightSwingTurnFinished = false;
 bool autoLeftPivotTurnFinished = false;
+bool autoRightPivotTurnFinished = false;
 bool autoLiftFinished = false;
 bool autoBaseLiftFinished = false;
 bool autoArmFinished = false;
@@ -283,7 +282,7 @@ void lcdControl(int in) {
 
 /////////////////////////////////////////////////////////////////
 
-void lcdDisplay(string top, string bottom) {
+void lcdDisplay(char * top, char * bottom) {
   clearLCDLine(0);
   clearLCDLine(1);
   displayLCDCenteredString(0, top);
@@ -304,28 +303,6 @@ void lcdAutonomousSelector() {
       case 3: lcdDisplay("Nothing", lcdEnterString); break;
     }
     lcdControl(nLCDButtons);
-  }
-}
-
-/////////////////////////////////////////////////////////////////
-
-void runAuto() {
-  switch(lcdSelection) {
-    case 0:
-      lcdDisplay("Left Auto", lcdIsRunningString);
-      leftAuto();
-    break;
-    case 1:
-      lcdDisplay("Right Auto", lcdIsRunningString);
-      rightAuto();
-    break;
-    case 2:
-      lcdDisplay("Nothing", lcdIsRunningString);
-    break;
-    case 3:
-      lcdDisplay("Nothing", lcdIsRunningString);
-    break;
-    default: lcdDisplay("Invalid", "lcdSelection"); break;
   }
 }
 
@@ -570,7 +547,7 @@ void autoClaw(int power, float seconds) {
 
 //robotC is stupid, so this garbage has to be here
 task asyncAutoDrive() {
-	autoDrive(autoDriveLeftArg, autoDriveRightArg, autoDriveInchesArg);
+	autoDrive(autoDriveInchesArg);
 	autoDriveFinished = true;
 }
 
@@ -655,7 +632,7 @@ void leftAuto() {
   //move arm to front limit     async
   autoArmPowerArg = 127;
   autoArmSecondsArg = 1.0;
-  startTask(asyncAutoArm)
+  startTask(asyncAutoArm);
   //drive off bar               sync
   autoDrive(4);
   //turn to match tile          sync
@@ -736,6 +713,28 @@ void leftAuto() {
 
 void rightAuto() {
 
+}
+
+/////////////////////////////////////////////////////////////////
+
+void runAuto() {
+  switch(lcdSelection) {
+    case 0:
+      lcdDisplay("Left Auto", lcdIsRunningString);
+      leftAuto();
+    break;
+    case 1:
+      lcdDisplay("Right Auto", lcdIsRunningString);
+      rightAuto();
+    break;
+    case 2:
+      lcdDisplay("Nothing", lcdIsRunningString);
+    break;
+    case 3:
+      lcdDisplay("Nothing", lcdIsRunningString);
+    break;
+    default: lcdDisplay("Invalid", "lcdSelection"); break;
+  }
 }
 
 
