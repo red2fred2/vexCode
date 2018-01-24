@@ -708,6 +708,29 @@ void leftAuto() {
   autoBaseLift(127, 127, 1.0);
 
   //grab center cones
+  autoLeftPivotTurn(45);
+  autoDrive(6);
+  pickupCone();
+  autoLeftSwingTurn(45);
+  autoDrive(18);
+  pickupCone();
+  autoRightSwingTurn(90);
+  autoDrive(18);
+  pickupCone();
+  autoRightSwingTurn(90);
+  autoDrive(18);
+  pickupCone();
+
+  //get to right center cones
+  autoRightSwingTurn(90);
+  autoDrive(36);
+  pickupCone();
+  autoRightSwingTurn(45);
+  autoDrive(12);
+  pickupCone();
+  autoRightPivotTurn(90);
+  autoDrive(12);
+  pickupCone();
 }
 
 /////////////////////////////////////////////////////////////////
