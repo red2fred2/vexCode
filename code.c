@@ -417,8 +417,8 @@ void resetRightPID() {
 ****************************************************************/
 
 task tankDrive() {
-  int left = VexRT(Ch3);
-  int right = VexRT(Ch2);
+  int left = vexRT(Ch3);
+  int right = vexRT(Ch2);
   expoDrive(left, right);
 }
 
@@ -442,20 +442,21 @@ task liftControl() {
 
 task armControl() {
   int forward = vexRT(Ch4Xmtr2);
+  arm(forward);
 }
 
 /////////////////////////////////////////////////////////////////
 
 task baseLiftControl() {
-  int power = VexRT(Ch1Xmtr2);
+  int power = vexRT(Ch1Xmtr2);
   baseLift(power, power );
 }
 
 /////////////////////////////////////////////////////////////////
 
 task modeSwitch() {
-  if(VexRT(Btn6U)) {
-      waitUntilFalse(VexRT(Btn6U));
+  if(vexRT(Btn6U)) {
+      waitUntilFalse(vexRT(Btn6U));
       tankMode = !tankMode;
     }
 }
@@ -473,8 +474,8 @@ void autoDrive(float inches) {
   int rightTicks = rightTicksPerInch * inches + getRightDriveEncoder();
 
   drive(
-    leftPID(leftTicks, getLeftDriveEncoder(), leftPMult, leftIMult, leftDMult),
-    rightPID(rightTicks, getRightDriveEncoder(), rightPMult, rightIMult, rightDMult)
+    leftPID(leftTicks, getLeftDriveEncoder()),
+    rightPID(rightTicks, getRightDriveEncoder())
   );
 }
 
@@ -488,8 +489,8 @@ void autoLeftSwingTurn(float degrees) {
   int rightTicks = 0;
 
   drive(
-    leftPID(leftTicks, getLeftDriveEncoder(), leftPMult, leftIMult, leftDMult),
-    rightPID(rightTicks, getRightDriveEncoder(), rightPMult, rightIMult, rightDMult)
+    leftPID(leftTicks, getLeftDriveEncoder()),
+    rightPID(rightTicks, getRightDriveEncoder())
   );
 }
 
@@ -501,8 +502,8 @@ void autoRightSwingTurn(float degrees) {
   int rightTicks = inchesPerSwingTurnDegree * leftTicksPerInch * degrees + getRightDriveEncoder();
 
   drive(
-    leftPID(leftTicks, getLeftDriveEncoder, leftPMult, leftIMult, leftDMult),
-    rightPID(rightTicks, getRightDriveEncoder, rightPMult, rightIMult, rightDMult)
+    leftPID(leftTicks, getLeftDriveEncoder()),
+    rightPID(rightTicks, getRightDriveEncoder())
   );
 }
 
@@ -516,8 +517,8 @@ void autoLeftPivotTurn(float degrees) {
   int rightTicks = (inchesPerPivotDegree * rightTicksPerInch * degrees + getRightDriveEncoder());
 
   drive(
-    leftPID(leftTicks, getLeftDriveEncoder(), leftPMult, leftIMult, leftDMult),
-    rightPID(rightTicks, getRightDriveEncoder(), rightPMult, rightIMult, rightDMult)
+    leftPID(leftTicks, getLeftDriveEncoder()),
+    rightPID(rightTicks, getRightDriveEncoder())
   );
 }
 
@@ -529,8 +530,8 @@ void autoRightPivotTurn(float degrees) {
   int rightTicks = -(inchesPerPivotDegree * rightTicksPerInch * degrees + getRightDriveEncoder());
 
   drive(
-    leftPID(leftTicks, getLeftDriveEncoder(), leftPMult, leftIMult, leftDMult),
-    rightPID(rightTicks, getRightDriveEncoder(), rightPMult, rightIMult, rightDMult)
+    leftPID(leftTicks, getLeftDriveEncoder()),
+    rightPID(rightTicks, getRightDriveEncoder())
   );
 }
 
