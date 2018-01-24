@@ -635,6 +635,18 @@ task asyncAutoClaw() {
 ////////////////////////// Auto Groups //////////////////////////
 ****************************************************************/
 
+void pickupCone() {
+  autoDrive(12);
+  autoLift(-127, -127, 1.0);
+  autoClaw(-127, 1.0);
+  autoLift(127, 127, 1.0);
+  autoArm(127, 0.75);
+  autoLift(-127, -127, 0.5);
+  autoClaw(-127, 1.0);
+  autoLift(127, 127, 0.5);
+  autoArm(-127, 0.75);
+}
+
 void leftAuto() {
   //raise lift to clear base    async
   autoLiftLeftArg = 127;
@@ -658,7 +670,7 @@ void leftAuto() {
   autoClawSecondsArg = 1.0;
   startTask(asyncAutoClaw);
   //drive to right mobile base  sync
-  autoDrive(30);
+  autoDrive(36);
   //lift base                   sync
   autoBaseLift(127, 127, 0.5);
   //turn to face first cone
@@ -666,8 +678,19 @@ void leftAuto() {
 
   waitUntilTrue(autoClawFinished);
 
-  
+  //pick up line of cones
+  pickupCone();
+  autoLeftPivotTurn(90);
+  autoDrive(12);
+  pickupCone();
+  autoDrive(12);
+  pickupCone();
+  autoDrive(12);
+  pickupCone();
 
+  //drive to scoring zone
+  autoDrive(36);
+  autoLeftSwingTurn(45);
 }
 
 /////////////////////////////////////////////////////////////////
