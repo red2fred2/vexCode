@@ -23,15 +23,15 @@
 
 //general
 
-const double expoMult                     = 0.039579;
+const float expoMult                     = 0.039579;
 const int expoPow                         = 3;
 
-const double inchesPerWheelRotation       = 1.0;
-const double inchesPerSwingTurnDegree     = 1.0;
-const double inchesPerPivotDegree         = 1.0;
+const float inchesPerWheelRotation       = 1.0;
+const float inchesPerSwingTurnDegree     = 1.0;
+const float inchesPerPivotDegree         = 1.0;
 
-const double leftEncoderTicksPerRotation  = 100.0;
-const double rightEncoderTicksPerRotation = 100.0;
+const float leftEncoderTicksPerRotation  = 100.0;
+const float rightEncoderTicksPerRotation = 100.0;
 
 const int leftTicksPerInch = (int)(leftEncoderTicksPerRotation / inchesPerWheelRotation);
 const int rightTicksPerInch = (int)(rightEncoderTicksPerRotation / inchesPerWheelRotation);
@@ -45,58 +45,58 @@ const int lcdCenter = 2;
 const int lcdRight  = 4;
 const int lcdDelay  = 5;
 
-const string lcdEnterString = "<         Enter        >";
-const string lcdIsRunningString = "is running!";
+string lcdEnterString = "<         Enter        >";
+string lcdIsRunningString = "is running!";
 
 ////////////////////////////////////////////////////////////////
 
 //drivetrain
 const int leftDriveDeadzone  = 10;
-const double leftDriveMult   = 1.0;
+const float leftDriveMult   = 1.0;
 const int rightDriveDeadzone = 10;
-const double rightDriveMult  = 1.0;
+const float rightDriveMult  = 1.0;
 
-const double Pmult           = 1.0;
-const double Imult           = 1.0;
-const double Dmult           = 1.0;
+const float Pmult           = 1.0;
+const float Imult           = 1.0;
+const float Dmult           = 1.0;
 
 ////////////////////////////////////////////////////////////////
 
 //lift
 const int leftLiftDeadzone  = 10;
-const double leftLiftMult   = 1.0;
+const float leftLiftMult   = 1.0;
 const int rightLiftDeadzone = 10;
-const double rightLiftMult  = 1.0;
+const float rightLiftMult  = 1.0;
 
 /////////////////////////////////////////////////////////////////
 
 //arm
 const int armDeadzone = 10;
-const double armMult  = 1.0;
+const float armMult  = 1.0;
 
 /////////////////////////////////////////////////////////////////
 
 //baseLift
 const int leftBaseLiftDeadzone  = 10;
-const double leftBaseLiftMult   = 1.0;
+const float leftBaseLiftMult   = 1.0;
 const int rightBaseLiftDeadzone = 10;
-const double rightBaseLiftMult  = 1.0;
+const float rightBaseLiftMult  = 1.0;
 
 /////////////////////////////////////////////////////////////////
 
 //claw
 const int clawDeadzone = 10;
-const double clawMult  = 1.0;
+const float clawMult  = 1.0;
 
 
 /****************************************************************
 ////////////////////////// Variables ////////////////////////////
 ****************************************************************/
 
-double leftIntegral = 0;
-double leftError = 0;
-double rightIntegral = 0;
-double rightError = 0;
+float leftIntegral = 0;
+float leftError = 0;
+float rightIntegral = 0;
+float rightError = 0;
 
 bool tankMode = false;
 
@@ -152,14 +152,14 @@ int deadzone(int value, int deadzone) {
 
 /////////////////////////////////////////////////////////////////
 
-int applyMult(int value, double multiplier) {
+int applyMult(int value, float multiplier) {
   return (int)(value * multiplier);
 }
 
 /////////////////////////////////////////////////////////////////
 
 int expoCurve(int in) {
-  double base = expoMult * in;
+  float base = expoMult * in;
   return (int)(pow(base, expoPow));
 }
 
@@ -292,8 +292,6 @@ void lcdDisplay(string top, string bottom) {
 
 /////////////////////////////////////////////////////////////////
 
-lcdDisplay("asd", "dfsa");
-
 void lcdAutonomousSelector() {
   bool centerPressed = nLCDButtons == lcdCenter;
   bool autonomous = bIfiAutonomousMode;
@@ -336,69 +334,69 @@ void runAuto() {
 ///////////////////////// PID Functions /////////////////////////
 ****************************************************************/
 
-double P(double target, double actual) {
+float P(float target, float actual) {
   return Pmult * (target - actual);
 }
 
 /////////////////////////////////////////////////////////////////
 
-double leftI(double target, double actual) {
+float leftI(float target, float actual) {
   leftIntegral += target - actual;
   return Imult * leftIntegral;
 }
-double rightI(double target, double actual) {
+float rightI(float target, float actual) {
   rightIntegral += target - actual;
   return Imult * rightIntegral;
 }
 
 /////////////////////////////////////////////////////////////////
 
-double leftD(double target, double actual) {
-  double newError = target - actual;
-  double diff = newError - leftError;
+float leftD(float target, float actual) {
+  float newError = target - actual;
+  float diff = newError - leftError;
   leftError = newError;
   return Dmult * newError;
 }
-double rightD(double target, double actual) {
-  double newError = target - actual;
-  double diff = newError - rightError;
+float rightD(float target, float actual) {
+  float newError = target - actual;
+  float diff = newError - rightError;
   rightError = newError;
   return Dmult * newError;
 }
 
 /////////////////////////////////////////////////////////////////
 
-int leftPI(double target, double actual) {
+int leftPI(float target, float actual) {
   return (int)(P(target, actual) + leftI(target, actual));
 }
-int rightPI(double target, double actual) {
+int rightPI(float target, float actual) {
   return (int)(P(target, actual) + rightI(target, actual));
 }
 
 /////////////////////////////////////////////////////////////////
 
-int rightPD(double target, double actual) {
+int rightPD(float target, float actual) {
   return (int)(P(target, actual) + leftD(target, actual));
 }
-int rightPD(double target, double actual) {
+int rightPD(float target, float actual) {
   return (int)(P(target, actual) + leftD(target, actual));
 }
 
 /////////////////////////////////////////////////////////////////
 
-int leftID(double target, double actual) {
+int leftID(float target, float actual) {
   return (int)(leftI(target, actual) + leftD(target, actual));
 }
-int rightID(double target, double actual) {
+int rightID(float target, float actual) {
   return (int)(rightI(target, actual) + rightD(target, actual));
 }
 
 /////////////////////////////////////////////////////////////////
 
-int leftPID(double target, double actual) {
+int leftPID(float target, float actual) {
   return (int)(P(target, actual) + leftI(target, actual) + leftD(target, actual));
 }
-int rightPID(double target, double actual) {
+int rightPID(float target, float actual) {
   return (int)(P(target, actual) + rightI(target, actual) + rightD(target, actual));
 }
 
@@ -467,7 +465,7 @@ task modeSwitch() {
 //////////////////////// Auto Functions /////////////////////////
 ****************************************************************/
 
-void autoDrive(double inches) {
+void autoDrive(float inches) {
   resetLeftPID();
   resetRightPID();
 
@@ -482,7 +480,7 @@ void autoDrive(double inches) {
 
 /////////////////////////////////////////////////////////////////
 
-void autoLeftSwingTurn(double degrees) {
+void autoLeftSwingTurn(float degrees) {
   resetLeftPID();
   resetRightPID();
 
@@ -495,7 +493,7 @@ void autoLeftSwingTurn(double degrees) {
   );
 }
 
-void autoRightSwingTurn(double degrees) {
+void autoRightSwingTurn(float degrees) {
   resetLeftPID();
   resetRightPID();
 
@@ -510,7 +508,7 @@ void autoRightSwingTurn(double degrees) {
 
 /////////////////////////////////////////////////////////////////
 
-void autoLeftPivotTurn(double degrees) {
+void autoLeftPivotTurn(float degrees) {
   resetLeftPID();
   resetRightPID();
 
@@ -523,7 +521,7 @@ void autoLeftPivotTurn(double degrees) {
   );
 }
 
-void autoRightPivotTurn(double degrees) {
+void autoRightPivotTurn(float degrees) {
   resetLeftPID();
   resetRightPID();
 
@@ -538,28 +536,28 @@ void autoRightPivotTurn(double degrees) {
 
 /////////////////////////////////////////////////////////////////
 
-void autoLift(int left, int right, double seconds) {
+void autoLift(int left, int right, float seconds) {
   lift(left, right);
   wait1Msec((int)(1000 * seconds));
 }
 
 /////////////////////////////////////////////////////////////////
 
-void autoArm(int power, double seconds) {
+void autoArm(int power, float seconds) {
   arm(power);
   wait1Msec((int)(1000 * seconds));
 }
 
 /////////////////////////////////////////////////////////////////
 
-void autoBaseLift(int left, int right, double seconds) {
+void autoBaseLift(int left, int right, float seconds) {
   baseLift(left, right);
   wait1Msec((int)(1000 * seconds));
 }
 
 /////////////////////////////////////////////////////////////////
 
-void autoClaw(int power, double seconds) {
+void autoClaw(int power, float seconds) {
   claw(power);
   wait1Msec((int)(1000 * seconds));
 }
