@@ -283,20 +283,20 @@ void lcdControl(int in) {
 
 /////////////////////////////////////////////////////////////////
 
-void lcdDisplay() {
+void lcdDisplay(string top, string bottom) {
   clearLCDLine(0);
   clearLCDLine(1);
-  displayLCDCenteredString(0, "top");
-  displayLCDCenteredString(1, "bottom");
+  displayLCDCenteredString(0, top);
+  displayLCDCenteredString(1, bottom);
 }
 
 /////////////////////////////////////////////////////////////////
 
+lcdDisplay("asd", "dfsa");
+
 void lcdAutonomousSelector() {
   bool centerPressed = nLCDButtons == lcdCenter;
   bool autonomous = bIfiAutonomousMode;
-
-  lcdDisplay();
 
   while(!(centerPressed || autonomous)) {
     switch(lcdSelection) {
@@ -450,7 +450,7 @@ task armControl() {
 
 task baseLiftControl() {
   int power = VexRT(Ch1Xmtr2);
-  baseLift(power);
+  baseLift(power, power );
 }
 
 /////////////////////////////////////////////////////////////////
