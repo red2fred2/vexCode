@@ -105,9 +105,28 @@ int lcdSelection = 0;
 /////////////////////////////////////////////////////////////////
 
 //robotC is dumb... or maybe I am
-int autoValue1 = 0;
-int autoValue2 = 0;
-int autoCondition = 0;
+int autoDriveLeftArg;
+int autoDriveRightArg;
+int autoDriveInchesArg;
+
+int autoLeftSwingTurnDegreesArg;
+int autoRightSwingTurnDegreesArg;
+int autoLeftPivotTurnDegreesArg;
+int autoRightPivotTurnDegreesArg;
+
+int autoLiftLeftArg;
+int autoLiftRightArg;
+int autoLiftSecondsArg;
+
+int autoArmPowerArg;
+int autoArmSecondsArg;
+
+int autoBaseLiftLeftArg;
+int autoBaseLiftRightArg;
+int autoBaseLiftSecondsArg;
+
+int autoClawPowerArg;
+int autoClawSecondsArg;
 
 /////////////////////////////////////////////////////////////////
 
@@ -552,63 +571,63 @@ void autoClaw(int power, double seconds) {
 
 //robotC is stupid, so this garbage has to be here
 task asyncAutoDrive() {
-	autoDrive(autoValue1, autoValue2, autoCondition);
+	autoDrive(autoDriveLeftArg, autoDriveRightArg, autoDriveInchesArg);
 	autoDriveFinished = true;
 }
 
 /////////////////////////////////////////////////////////////////
 
 task asyncAutoLeftSwingTurn() {
-	autoDrive(autoValue1, autoValue2, autoCondition);
+	autoDrive(autoLeftSwingTurnDegreesArg);
 	autoDriveFinished = true;
 }
 
 /////////////////////////////////////////////////////////////////
 
 task asyncAutoRightSwingTurn() {
-	autoLeftSwingTurn(autoValue1, autoValue2, autoCondition);
+	autoLeftSwingTurn(autoRightSwingTurnDegreesArg);
 	autoLeftSwingTurnFinished = true;
 }
 
 /////////////////////////////////////////////////////////////////
 
 task asyncAutoLeftPivotTurn() {
-	autoLeftPivotTurn(autoValue1, autoValue2, autoCondition);
+	autoLeftPivotTurn(autoLeftPivotTurnDegreesArg);
 	autoLeftPivotTurnFinished = true;
 }
 
 /////////////////////////////////////////////////////////////////
 
 task asyncAutoRightPivotTurn() {
-	autoRightPivotTurn(autoValue1, autoValue2, autoCondition);
+	autoRightPivotTurn(autoRightPivotTurnDegreesArg);
 	autoRightPivotTurnFinished = true;
 }
 
 /////////////////////////////////////////////////////////////////
 
 task asyncAutoLift() {
-	autoLift(autoValue1, autoValue2, autoCondition);
+	autoLift(autoLiftLeftArg, autoLiftRightArg, autoLiftSecondsArg);
 	autoLiftFinished = true;
 }
 
 /////////////////////////////////////////////////////////////////
 
 task asyncAutoArm() {
-	autoArm(autoValue1, autoCondition);
+	autoArm(autoArmPowerArg, autoArmSecondsArg);
 	autoArmFinished = true;
 }
 
 /////////////////////////////////////////////////////////////////
 
 task asyncAutoBaseLift() {
-	autoBaseLift(autoValue1, autoValue2, autoCondition);
+	autoBaseLift(autoBaseLiftLeftArg, autoBaseLiftRightArg, autoBaseLiftSecondsArg);
 	autoBaseLiftFinished = true;
 }
 
 /////////////////////////////////////////////////////////////////
 
 task asyncAutoClaw() {
-	autoClaw(autoValue1, autoCondition);
+	autoClaw(autoClawPowerArg, autoClawSecondsArg);
 	autoClawFinished = true;
 }
 
