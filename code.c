@@ -105,13 +105,6 @@ int lcdSelection = 0;
 /////////////////////////////////////////////////////////////////
 
 //robotC is dumb... or maybe I am
-int autoDriveInchesArg;
-
-int autoLeftSwingTurnDegreesArg;
-int autoRightSwingTurnDegreesArg;
-int autoLeftPivotTurnDegreesArg;
-int autoRightPivotTurnDegreesArg;
-
 int autoLiftLeftArg;
 int autoLiftRightArg;
 int autoLiftSecondsArg;
@@ -129,11 +122,6 @@ int autoClawSecondsArg;
 /////////////////////////////////////////////////////////////////
 
 //synchronization locks
-bool autoDriveFinished = false;
-bool autoLeftSwingTurnFinished = false;
-bool autoRightSwingTurnFinished = false;
-bool autoLeftPivotTurnFinished = false;
-bool autoRightPivotTurnFinished = false;
 bool autoLiftFinished = false;
 bool autoBaseLiftFinished = false;
 bool autoArmFinished = false;
@@ -181,7 +169,7 @@ void waitUntilFalse(bool in) {
 void drive(int left, int right) {
   int deadLeft = deadzone(left, leftDriveDeadzone);
   int multLeft = applyMult(deadLeft, leftDriveMult);
-  motor[leftDrive] = 0;
+  motor[leftDrive] = multLeft;
 
   int deadRight = deadzone(right, rightDriveDeadzone);
   int multRight = applyMult(deadRight, rightDriveMult);
@@ -339,33 +327,6 @@ float rightD(float target, float actual) {
   float diff = newError - rightError;
   rightError = newError;
   return Dmult * diff;
-}
-
-/////////////////////////////////////////////////////////////////
-
-int leftPI(float target, float actual) {
-  return (int)(P(target, actual) + leftI(target, actual));
-}
-int rightPI(float target, float actual) {
-  return (int)(P(target, actual) + rightI(target, actual));
-}
-
-/////////////////////////////////////////////////////////////////
-
-int rightPD(float target, float actual) {
-  return (int)(P(target, actual) + leftD(target, actual));
-}
-int rightPD(float target, float actual) {
-  return (int)(P(target, actual) + leftD(target, actual));
-}
-
-/////////////////////////////////////////////////////////////////
-
-int leftID(float target, float actual) {
-  return (int)(leftI(target, actual) + leftD(target, actual));
-}
-int rightID(float target, float actual) {
-  return (int)(rightI(target, actual) + rightD(target, actual));
 }
 
 /////////////////////////////////////////////////////////////////
@@ -546,41 +507,6 @@ void autoClaw(int power, float seconds) {
 ****************************************************************/
 
 //robotC is stupid, so this garbage has to be here
-task asyncAutoDrive() {
-	autoDrive(autoDriveInchesArg);
-	autoDriveFinished = true;
-}
-
-/////////////////////////////////////////////////////////////////
-
-task asyncAutoLeftSwingTurn() {
-	autoDrive(autoLeftSwingTurnDegreesArg);
-	autoDriveFinished = true;
-}
-
-/////////////////////////////////////////////////////////////////
-
-task asyncAutoRightSwingTurn() {
-	autoLeftSwingTurn(autoRightSwingTurnDegreesArg);
-	autoLeftSwingTurnFinished = true;
-}
-
-/////////////////////////////////////////////////////////////////
-
-task asyncAutoLeftPivotTurn() {
-	autoLeftPivotTurn(autoLeftPivotTurnDegreesArg);
-	autoLeftPivotTurnFinished = true;
-}
-
-/////////////////////////////////////////////////////////////////
-
-task asyncAutoRightPivotTurn() {
-	autoRightPivotTurn(autoRightPivotTurnDegreesArg);
-	autoRightPivotTurnFinished = true;
-}
-
-/////////////////////////////////////////////////////////////////
-
 task asyncAutoLift() {
 	autoLift(autoLiftLeftArg, autoLiftRightArg, autoLiftSecondsArg);
 	autoLiftFinished = true;
