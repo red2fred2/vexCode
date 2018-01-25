@@ -102,31 +102,6 @@ bool tankMode = false;
 
 int lcdSelection = 0;
 
-/////////////////////////////////////////////////////////////////
-
-//robotC is dumb... or maybe I am
-int autoLiftLeftArg;
-int autoLiftRightArg;
-int autoLiftSecondsArg;
-
-int autoArmPowerArg;
-int autoArmSecondsArg;
-
-int autoBaseLiftLeftArg;
-int autoBaseLiftRightArg;
-int autoBaseLiftSecondsArg;
-
-int autoClawPowerArg;
-int autoClawSecondsArg;
-
-/////////////////////////////////////////////////////////////////
-
-//synchronization locks
-bool autoLiftFinished = false;
-bool autoBaseLiftFinished = false;
-bool autoArmFinished = false;
-bool autoClawFinished = false;
-
 
 /****************************************************************
 /////////////////////// Utility Functions ///////////////////////
@@ -519,35 +494,23 @@ void pickupCone() {
 }
 
 void leftAuto() {
-  //raise lift to clear base    async
-  autoLiftLeftArg = 127;
-  autoLiftRightArg = 127;
-  autoLiftSecondsArg = 1.0;
-  startTask(asyncAutoLift);
-  //move arm to front limit     async
-  autoArmPowerArg = 127;
-  autoArmSecondsArg = 1.0;
-  startTask(asyncAutoArm);
-  //drive off bar               sync
+  //raise lift to clear base
+  autoLift(127, 127, 1.0);
+  //move arm to front limit
+  autoArm(127, 1.0);
+  //drive off bar
   autoDrive(4);
-  //turn to match tile          sync
+  //turn to match tile
   autoLeftSwingTurn(45);
 
-  waitUntilTrue(autoLiftFinished);
-  waitUntilTrue(autoArmFinished);
-
-  //open claw for a cone        async
-  autoClawPowerArg = 127;
-  autoClawSecondsArg = 1.0;
-  startTask(asyncAutoClaw);
-  //drive to right mobile base  sync
+  //open claw for a cone
+  autoClaw(127, 1.0);
+  //drive to right mobile base
   autoDrive(36);
-  //lift base                   sync
+  //lift base
   autoBaseLift(127, 127, 0.5);
   //turn to face first cone
   autoLeftPivotTurn(90);
-
-  waitUntilTrue(autoClawFinished);
 
   //pick up line of cones
   pickupCone();
