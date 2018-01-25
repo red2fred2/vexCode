@@ -354,7 +354,7 @@ void resetRightPID() {
 /////////////////////// Teleop Functions ////////////////////////
 ****************************************************************/
 
-task tankDrive() {
+void tankDrive() {
   int left = vexRT(Ch3);
   int right = vexRT(Ch2);
   expoDrive(left, right);
@@ -362,7 +362,7 @@ task tankDrive() {
 
 /////////////////////////////////////////////////////////////////
 
-task joystickDrive() {
+void joystickDrive() {
   int up = vexRT(Ch3);
   int right = vexRT(Ch4);
   expoDrive(up + right, up - right);
@@ -370,7 +370,7 @@ task joystickDrive() {
 
 /////////////////////////////////////////////////////////////////
 
-task liftControl() {
+void liftControl() {
   int left = vexRT(Ch3Xmtr2);
   int right = vexRT(Ch2Xmtr2);
   lift(left, right);
@@ -378,21 +378,21 @@ task liftControl() {
 
 /////////////////////////////////////////////////////////////////
 
-task armControl() {
+void armControl() {
   int forward = vexRT(Ch4Xmtr2);
   arm(forward);
 }
 
 /////////////////////////////////////////////////////////////////
 
-task baseLiftControl() {
+void baseLiftControl() {
   int power = vexRT(Ch1Xmtr2);
   baseLift(power, power );
 }
 
 /////////////////////////////////////////////////////////////////
 
-task modeSwitch() {
+void modeSwitch() {
   if(vexRT(Btn6U)) {
       waitUntilFalse(vexRT(Btn6U));
       tankMode = !tankMode;
@@ -501,37 +501,6 @@ void autoClaw(int power, float seconds) {
   wait1Msec((int)(1000 * seconds));
 }
 
-
-/****************************************************************
-////////////////////// Async Auto Functions /////////////////////
-****************************************************************/
-
-//robotC is stupid, so this garbage has to be here
-task asyncAutoLift() {
-	autoLift(autoLiftLeftArg, autoLiftRightArg, autoLiftSecondsArg);
-	autoLiftFinished = true;
-}
-
-/////////////////////////////////////////////////////////////////
-
-task asyncAutoArm() {
-	autoArm(autoArmPowerArg, autoArmSecondsArg);
-	autoArmFinished = true;
-}
-
-/////////////////////////////////////////////////////////////////
-
-task asyncAutoBaseLift() {
-	autoBaseLift(autoBaseLiftLeftArg, autoBaseLiftRightArg, autoBaseLiftSecondsArg);
-	autoBaseLiftFinished = true;
-}
-
-/////////////////////////////////////////////////////////////////
-
-task asyncAutoClaw() {
-	autoClaw(autoClawPowerArg, autoClawSecondsArg);
-	autoClawFinished = true;
-}
 
 /****************************************************************
 ////////////////////////// Auto Groups //////////////////////////
@@ -693,14 +662,14 @@ task usercontrol() {
   while(true) {
 
     //driver
-    startTask(modeSwitch);
+    modeSwitch();
 
-    if(tankMode) startTask(tankDrive);
-    else startTask(joystickDrive);
+    if(tankMode) tankDrive();
+    else joystickDrive();
 
     //copilot
-    startTask(liftControl);
-    startTask(armControl);
-    startTask(baseLiftControl);
+    liftControl();
+    armControl();
+    baseLiftControl();
   }
 }
