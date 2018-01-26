@@ -127,13 +127,6 @@ int expoCurve(int in) {
 
 /////////////////////////////////////////////////////////////////
 
-void waitUntilTrue(bool in) {
-  while(!in) {}
-  wait1Msec(lcdDelay);
-}
-
-/////////////////////////////////////////////////////////////////
-
 void waitUntilFalse(bool in) {
   while(in) {}
   wait1Msec(lcdDelay);
@@ -247,8 +240,8 @@ void lcdControl(int in) {
 void lcdDisplay(char * top, char * bottom) {
   clearLCDLine(0);
   clearLCDLine(1);
-  displayLCDCenteredString(0, "top";
-  displayLCDCenteredString(1, "bottom";
+  displayLCDCenteredString(0, top);
+  displayLCDCenteredString(1, bottom);
   }
 
 /////////////////////////////////////////////////////////////////
@@ -353,8 +346,14 @@ void liftControl() {
 /////////////////////////////////////////////////////////////////
 
 void armControl() {
-  int forward = vexRT(Ch4Xmtr2);
-  arm(forward);
+
+	if(vexRT(Btn5UXmtr2) == 1) {
+		arm(127);
+	} else if(vexRT(Btn5DXmtr2) == 1) {
+		arm(-127);
+	} else {
+		arm(0);
+	}
 }
 
 /////////////////////////////////////////////////////////////////
@@ -364,13 +363,14 @@ void baseLiftControl() {
   baseLift(power, power );
 }
 
-/////////////////////////////////////////////////////////////////
-
-void modeSwitch() {
-  if(vexRT(Btn6U)) {
-      waitUntilFalse(vexRT(Btn6U));
-      tankMode = !tankMode;
-    }
+void clawControl() {
+	if(vexRt(Btn6Uxmtr2) == 1) {
+		claw(127);
+	} else if(vexRT(Btn6D)) {
+		claw(-127);
+	} else {
+		claw(0);
+	}
 }
 
 
@@ -624,8 +624,6 @@ task usercontrol() {
   while(true) {
 
     //driver
-    modeSwitch();
-
     if(tankMode) tankDrive();
     else joystickDrive();
 
@@ -633,5 +631,6 @@ task usercontrol() {
     liftControl();
     armControl();
     baseLiftControl();
+    clawControl();
 	}
 }
